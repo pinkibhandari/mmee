@@ -75,8 +75,9 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|unique:users,phone,' . $user->id . '|digits:10|regex:/^[6-9]\d{9}$/',
            
         ]);
 
@@ -92,6 +93,7 @@ class UserController extends Controller
         // Update user profile
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         // Update other fields as needed
         $user->save();
 

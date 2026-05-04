@@ -18,11 +18,14 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|unique:users,phone|digits:10|regex:/^[6-9]\d{9}$/',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|regex:/^(?=.*[A-Z])(?=.*[0-9]).+$/',
+            'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).+$/',
             'emp_id' => 'required|unique:users,emp_id',
             'device_id' => 'required|string',
             'device_type' => 'required|in:android,ios'
-        ]);
+        ],  [
+                'new_password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+            ]
+        );
 
         if ($validator->fails()) {
             return response()->json([
