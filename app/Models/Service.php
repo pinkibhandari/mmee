@@ -9,6 +9,7 @@ class Service extends Model
     protected $fillable = [
         'name',
         'description',
+        'status',
         'created_at',
         'updated_at',
     ];
