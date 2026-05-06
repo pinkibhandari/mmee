@@ -6,7 +6,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\AttendanceController;
-use App\Http\Controllers\Api\ServiceRequestController;
+use App\Http\Controllers\Api\TaskLogController;
+use App\Http\Controllers\Api\TaskController;
+
 
 
 Route::post('/signup', [AuthController::class, 'signup']);
@@ -26,8 +28,13 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::post('/attendance/mark', [AttendanceController::class, 'markAttendance']);
      Route::get('/attendance/today-status', [AttendanceController::class, 'todayAttendanceStatus']);
      Route::get('/attendance/monthly', [AttendanceController::class, 'monthlyAttendance']);
-     // Service Routes
-     Route::get('expert/service-request', [ServiceRequestController::class, 'getServiceRequest']);
-     Route::get('expert/service-request/{id}', [ServiceRequestController::class, 'show']);
-
-     });
+     //employee task log routes
+     Route::post('/start-job', [TaskLogController::class, 'startJob']);
+     Route::post('/check-in', [TaskLogController::class, 'checkIn']);
+     Route::post('/work-start', [TaskLogController::class, 'workStart']);
+     Route::post('/work-end', [TaskLogController::class, 'workEnd']);
+     Route::post('/check-out', [TaskLogController::class, 'checkOut']);
+     //  task list route
+     Route::get('/task-list', [TaskController::class, 'taskList']);
+     Route::get('/task/{id}', [TaskController::class, 'taskDetails']);
+ });

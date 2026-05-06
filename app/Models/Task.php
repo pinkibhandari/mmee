@@ -36,9 +36,9 @@ class Task extends Model
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
-    public function taskProofs()
+     public function logs()
     {
-        return $this->hasMany(TaskProof::class, 'task_id');
+        return $this->hasMany(TaskLog::class);
     }
 
 }

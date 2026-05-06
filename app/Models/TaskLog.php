@@ -4,16 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JobLog extends Model
+class TaskLog extends Model
 {
     protected $fillable = [
         'task_id',
         'action',
-        'action_at'
+        'action_at',
+        'latitude',
+        'longitude',
+        'status',
+        'comment'
     ];
 
     public function task()
     {
         return $this->belongsTo(Task::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(TaskLogFile::class);
     }
 }

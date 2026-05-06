@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TaskProof extends Model
+class TaskLogFile extends Model
 {
     protected $fillable = [
-        'task_id',
+        'task_log_id',
         'file_path',
         'file_type',
     ];
 
-    public function task()
+    public function log()
     {
-        return $this->belongsTo(Task::class, 'task_id');
+        return $this->belongsTo(TaskLog::class, 'task_log_id');
     }
 }
