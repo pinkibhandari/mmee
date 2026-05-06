@@ -9,6 +9,7 @@ class Task extends Model
        
         'task_code',
         'task_type',
+        'task_name',
         'title',
         'description',
         'work_notes',
@@ -20,8 +21,6 @@ class Task extends Model
         'longitude',
         'address',
         'due_date',
-        'started_at',
-        'completed_at',
         'started_at',
         'completed_at',
     ];

@@ -15,7 +15,7 @@
         {{-- <div class="sidebar-heading">
         Features
       </div> --}}
-
+{{-- Task Management --}}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
                 aria-expanded="true" aria-controls="collapseBootstrap">
@@ -25,8 +25,8 @@
             <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap"
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('admin.tasks.create') }}"><i
-                            class="fas fa-plus-circle me-2"></i> Assigned Task</a>
+                    {{-- <a class="collapse-item" href="{{ route('admin.tasks.create') }}"><i
+                            class="fas fa-plus-circle me-2"></i> Assigned Task</a> --}}
                     <a class="collapse-item" href="{{ route('admin.tasks.index') }}">
                         <i class="fas fa-list me-2"></i> Task List
                     </a>
@@ -34,6 +34,7 @@
 
             </div>
         </li>
+        {{-- Service Management --}}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseService"
                 aria-expanded="true" aria-controls="collapseService">
@@ -61,6 +62,7 @@
 
             </div>
         </li>
+        {{-- Site Management --}}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSite"
                 aria-expanded="true" aria-controls="collapseSite">
