@@ -23,8 +23,6 @@ class Task extends Model
         'due_date',
         'started_at',
         'completed_at',
-        'started_at',
-        'completed_at',
     ];
 
     public function creator()
