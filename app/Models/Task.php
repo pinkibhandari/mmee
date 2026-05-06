@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
-{    protected $fillable = [
-       
+{
+    protected $fillable = [
+
         'task_code',
         'task_type',
         'title',
@@ -40,5 +41,4 @@ class Task extends Model
     {
         return $this->hasMany(TaskProof::class, 'task_id');
     }
-
 }
