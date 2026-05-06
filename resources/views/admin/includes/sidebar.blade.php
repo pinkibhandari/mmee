@@ -15,7 +15,49 @@
         {{-- <div class="sidebar-heading">
         Features
       </div> --}}
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
+        aria-expanded="true" aria-controls="collapseUsers">
+        <i class="fas fa-users"></i>
+        <span>User Management</span>
+    </a>
 
+    <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers"
+        data-parent="#accordionSidebar">
+
+        <div class="bg-white py-2 collapse-inner rounded">
+
+            <!-- Users -->
+            {{-- <a class="collapse-item" href="{{ route('admin.users.index') }}">
+                <i class="fas fa-user me-2"></i> Users 
+            </a> --}}
+
+@can('can_view_users')
+    <a class="collapse-item" href="{{ route('admin.users.index') }}">
+        <i class="fas fa-user me-2"></i> Users 
+    </a>
+@endcan
+            <!-- Roles -->
+            {{-- <a class="collapse-item" href="{{ route('admin.roles.index') }}">
+                 <i class="fas fa-user-tag me-2"></i> Roles
+            </a> --}}
+@can('can_view_roles')
+    <a class="collapse-item" href="{{ route('admin.roles.index') }}">
+        <i class="fas fa-user-tag me-2"></i> Roles
+    </a>
+@endcan
+            <!-- Permissions -->
+            {{-- <a class="collapse-item" href="{{ route('admin.permissions.index') }}">
+                <i class="fas fa-key me-2"></i> Permissions
+            </a> --}}
+@can('can_view_permission')
+    <a class="collapse-item" href="{{ route('admin.permissions.index') }}">
+        <i class="fas fa-key me-2"></i> Permissions
+    </a>
+@endcan
+        </div>
+    </div>
+</li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
                 aria-expanded="true" aria-controls="collapseBootstrap">
