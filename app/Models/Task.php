@@ -10,6 +10,7 @@ class Task extends Model
 
         'task_code',
         'task_type',
+        'task_name',
         'title',
         'description',
         'work_notes',
