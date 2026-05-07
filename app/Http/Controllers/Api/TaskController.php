@@ -13,7 +13,8 @@ class TaskController extends Controller
     public function taskList(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'nullable|in:assigned,in_progress,completed'
+            'status' => 'nullable|in:assigned,in_progress,completed',
+            'search' => 'nullable|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -25,12 +26,25 @@ class TaskController extends Controller
             ]);
         }
         $query = Task::where('assigned_to', auth()->id())
-            ->with(['logs.files'])
+            // ->with(['logs.files'])
             ->latest();
         // Apply status filter if provided
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%")
+                    ->orWhere('task_code', 'LIKE', "%{$search}%")
+                    ->orWhere('priority', 'LIKE', "%{$search}%")
+                    ->orWhere('address', 'LIKE', "%{$search}%");
+            });
+        }
+
         $tasks = $query->get();
         return response()->json([
             'code' => 200,

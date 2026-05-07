@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\TaskLogController;
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\CmsPageController;
+use App\Http\Controllers\Api\HomeController;
 
 
 
@@ -17,6 +19,8 @@ Route::post('/user-exists', [AuthController::class, 'userExists']);
 
 Route::post('/send-otp-email', [PasswordController::class, 'sendOtpEmail']);
 Route::post('/reset-password', [PasswordController::class, 'resetPassword']);
+//  cms page route
+Route::get('/cms-page/{slug}', [CmsPageController::class, 'cmsPage']);
 
 Route::middleware('auth:sanctum')->group(function () {
      Route::post('/logout', [AuthController::class, 'logout']); 
@@ -34,7 +38,12 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::post('/work-start', [TaskLogController::class, 'workStart']);
      Route::post('/work-end', [TaskLogController::class, 'workEnd']);
      Route::post('/check-out', [TaskLogController::class, 'checkOut']);
+     Route::get('/employee-task-list', [TaskLogController::class, 'employeeTaskList']);
+
      //  task list route
      Route::get('/task-list', [TaskController::class, 'taskList']);
      Route::get('/task/{id}', [TaskController::class, 'taskDetails']);
+     //home page route
+     Route::get('/home', [HomeController::class, 'homePage']);
+ 
  });

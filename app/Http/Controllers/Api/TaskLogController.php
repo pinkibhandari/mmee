@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\TaskLogFile;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Resources\TaskResource;
 
 class TaskLogController extends Controller
 {
@@ -278,5 +279,20 @@ class TaskLogController extends Controller
     }
 
     // =========================================================
+
+    public function employeeTaskList()
+    {
+        $tasks = Task::where('assigned_to', auth()->id())
+            // ->with(['logs.files'])
+            ->whereIn('status', ['assigned', 'in_progress'])
+            ->latest()
+            ->get();
+        return response()->json([
+            'code' => 200,
+            'status' => true,
+            'message' => $tasks->isEmpty() ? 'No tasks found' : 'Task list fetched',
+            'data' => $tasks->isEmpty() ? [] : TaskResource::collection($tasks)
+        ]);
+    }
 
 }
