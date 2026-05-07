@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-
+        'site_id',
         'task_code',
         'task_type',
         'task_name',
@@ -36,7 +36,7 @@ class Task extends Model
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
-     public function logs()
+    public function logs()
     {
         return $this->hasMany(TaskLog::class);
     }

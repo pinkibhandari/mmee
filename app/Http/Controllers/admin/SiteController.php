@@ -43,8 +43,8 @@ class SiteController extends Controller
         Site::create([
             'site_name' => $request->name,
             'address' => $request->address,
-            'lat' => $request->latitude,
-            'lng' => $request->longitude,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'status' => $request->status,
         ]);
 
@@ -90,8 +90,8 @@ class SiteController extends Controller
         $site->update([
             'name' => $request->name,
             'address' => $request->address,
-            'lat' => $request->latitude,
-            'lng' => $request->longitude,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'status' => $request->status,
         ]);
 

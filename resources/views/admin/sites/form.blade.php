@@ -61,7 +61,7 @@
                            name="latitude"
                            class="form-control"
                            placeholder="Enter latitude"
-                           value="{{ old('latitude', $site->lat ?? '') }}">
+                           value="{{ old('latitude', $site->latitude ?? '') }}">
                 </div>
 
                 <!-- Longitude -->
@@ -71,7 +71,7 @@
                            name="longitude"
                            class="form-control"
                            placeholder="Enter longitude"
-                           value="{{ old('longitude', $site->lng ?? '') }}">
+                           value="{{ old('longitude', $site->longitude ?? '') }}">
                 </div>
 
                 <!-- Status -->

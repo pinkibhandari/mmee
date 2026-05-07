@@ -8,8 +8,8 @@ class Site extends Model
 {
     protected $fillable = [
     'site_name',
-    'lat',
-    'lng',
+    'latitude',
+    'longitude',
     'address',
     'status'
 ];
