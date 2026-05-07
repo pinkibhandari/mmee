@@ -86,6 +86,8 @@
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+
                         </select>
                     </div>
 
@@ -95,6 +97,8 @@
                         <select name="status" class="form-select">
                             <option value="0">Pending</option>
                             <option value="1">Completed</option>
+                            <option value="2">In Progress</option>
+                            <option value="3">Accepted</option>
                         </select>
                     </div>
 
@@ -113,7 +117,12 @@
                     <!-- Assign To -->
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Assign To</label>
-                        <input type="text" name="assign_to" class="form-control">
+                        <input type="text" name="assigned_to" class="form-control">
+                    </div>
+                    <!-- Created By -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Created By</label>
+                        <input type="text" name="created_by" class="form-control">
                     </div>
 
                     <!-- Work Note -->
