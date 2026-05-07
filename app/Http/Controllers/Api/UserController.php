@@ -94,7 +94,6 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        // Update other fields as needed
         $user->save();
 
         return response()->json([
@@ -105,30 +104,5 @@ class UserController extends Controller
         ]);
     }
 
-    public function forgotPassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'code' => 422,
-                'message' => $validator->errors()->first(),
-                'data' => (object) []
-            ], 422);
-        }
-
-        // Here you would typically send a password reset email
-        // For simplicity, we'll just return a success message
-
-        return response()->json([
-            'code' => 200,
-            'status' => true,
-            'message' => 'Password reset link sent to your email',
-            'data' => (object) []
-        ]);
-    }
 
 }

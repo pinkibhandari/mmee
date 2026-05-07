@@ -19,7 +19,7 @@ class AuthController extends Controller
             'phone' => 'required|unique:users,phone|digits:10|regex:/^[6-9]\d{9}$/',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).+$/',
-            'emp_id' => 'required|unique:users,emp_id',
+            // 'emp_id' => 'required|unique:users,emp_id',
             'device_id' => 'required|string',
             'device_type' => 'required|in:android,ios'
         ],  [
@@ -41,7 +41,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'emp_id' => $request->emp_id,
+            // 'emp_id' => $request->emp_id,
             'password' => Hash::make($request->password),
         ]);
         $tokenResult = $user->createToken('mobile-token');
@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'emp_id' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
@@ -86,12 +86,12 @@ class AuthController extends Controller
             ], 422);
         }
         // find user
-        $user = User::where('emp_id', $request->emp_id)->first();
+        $user = User::where('email', $request->email)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => false,
                 'code' => 422,
-                'message' => 'Invalid emp_id or password',
+                'message' => 'Invalid email or password',
                 'data' => (object) []
             ], 422);
         }
