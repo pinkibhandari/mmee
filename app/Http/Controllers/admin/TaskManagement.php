@@ -18,21 +18,21 @@ class TaskManagement extends Controller
     }
 
     // 🔹 CREATE
-   public function create()
-{
-    $task = null;
-    // 👇 sites table se data lao
-    $sites = Site::select('id', 'site_name', 'address', 'lat', 'lng')->get();
-// dd($sites);
+    public function create()
+    {
+        $task = null;
+        // 👇 sites table se data lao
+        $sites = Site::select('id', 'site_name', 'address', 'lat', 'lng')->get();
+        // dd($sites);
 
-    // preview code
-    $lastTask = Task::latest('id')->first();
-    $nextId = $lastTask ? $lastTask->id + 1 : 1;
+        // preview code
+        $lastTask = Task::latest('id')->first();
+        $nextId = $lastTask ? $lastTask->id + 1 : 1;
 
-    $previewCode = 'MME-' . date('Y') . '-' . date('m') . '-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+        $previewCode = 'MME-' . date('Y') . '-' . date('m') . '-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
 
-    return view('admin.task_managements.form', compact('task', 'sites', 'previewCode'));
-}
+        return view('admin.task_managements.form', compact('task', 'sites', 'previewCode'));
+    }
 
     // 🔹 STORE
     public function store(Request $request)
@@ -91,9 +91,10 @@ class TaskManagement extends Controller
     {
         return $request->validate([
             'task_name'   => 'required|string|max:255',
-            'assign_to'   => 'nullable|string|max:255',
+            'assigned_to' => 'nullable|string|max:255',
+            'created_by'  => 'nullable|string|max:255',
             'address'     => 'nullable|string',
-            'status'      => 'required|in:0,1',
+            'status' => 'required|in:0,1,2,3',
             'task_type'   => 'nullable|string',
             'title'       => 'nullable|string|max:255',
             'priority'    => 'nullable|string',
