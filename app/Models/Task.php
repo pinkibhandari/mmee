@@ -22,6 +22,8 @@ class Task extends Model
         'longitude',
         'address',
         'due_date',
+        'customer_name',
+        'customer_phone',
         'started_at',
         'completed_at',
     ];

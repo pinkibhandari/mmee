@@ -1,15 +1,15 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4 border-0">
 
         <!-- Header -->
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center py-3">
             <h6 class="mb-0">
                 <strong>{{ $task ? 'Edit Task' : 'Add Task' }}</strong>
             </h6>
 
-            <a href="{{ route('admin.tasks.index') }}" class="btn btn-sm btn-secondary">
+            <a href="{{ route('admin.tasks.index') }}" class="btn btn-sm btn-secondary px-3">
                 Back
             </a>
         </div>
@@ -24,18 +24,18 @@
                     @method('PUT')
                 @endif
 
-                <div class="row">
+                <div class="row g-3">
 
                     <!-- Task Code -->
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Task Code</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Task Code</label>
 
                         <input type="text" class="form-control" value="{{ $task->task_code ?? $previewCode }}" readonly>
                     </div>
 
                     <!-- Task Type -->
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Task Type</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Task Type</label>
 
                         <select name="task_type" id="task_type" class="form-select">
 
@@ -55,10 +55,10 @@
                     </div>
 
                     <!-- Site Select -->
-                    <div class="col-md-4 mb-3 {{ old('task_type', $task->task_type ?? '') == 'site' ? '' : 'd-none' }}"
+                    <div class="col-lg-4 col-md-6 col-12 {{ old('task_type', $task->task_type ?? '') == 'site' ? '' : 'd-none' }}"
                         id="site_div">
 
-                        <label class="form-label">Select Site</label>
+                        <label class="form-label fw-semibold">Select Site</label>
 
                         <select name="site_id" id="site_select" class="form-select">
 
@@ -79,40 +79,40 @@
                     </div>
 
                     <!-- Task Name -->
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Task Name</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Task Name</label>
 
                         <input type="text" name="task_name" id="task_name" class="form-control"
                             value="{{ old('task_name', $task->task_name ?? '') }}">
                     </div>
 
                     <!-- Address -->
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Address</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Address</label>
 
                         <input type="text" name="address" id="address" class="form-control"
                             value="{{ old('address', $task->address ?? '') }}">
                     </div>
 
                     <!-- Latitude -->
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Latitude</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Latitude</label>
 
                         <input type="text" name="latitude" id="latitude" class="form-control"
                             value="{{ old('latitude', $task->latitude ?? '') }}">
                     </div>
 
                     <!-- Longitude -->
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Longitude</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Longitude</label>
 
                         <input type="text" name="longitude" id="longitude" class="form-control"
                             value="{{ old('longitude', $task->longitude ?? '') }}">
                     </div>
 
                     <!-- Priority -->
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Priority</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Priority</label>
 
                         <select name="priority" class="form-select">
 
@@ -139,8 +139,8 @@
                     </div>
 
                     <!-- Status -->
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Status</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Status</label>
 
                         <select name="status" class="form-select">
 
@@ -163,24 +163,40 @@
                     </div>
 
                     <!-- Due Date -->
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Due Date</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Due Date</label>
 
                         <input type="date" name="due_date" class="form-control" min="{{ date('Y-m-d') }}"
                             value="{{ old('due_date', isset($task->due_date) ? \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') : '') }}">
                     </div>
 
                     <!-- Title -->
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Title</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Title</label>
 
                         <input type="text" name="title" class="form-control"
                             value="{{ old('title', $task->title ?? '') }}">
                     </div>
 
+                    <!-- Customer Name -->
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Customer Name</label>
+
+                        <input type="text" name="customer_name" class="form-control"
+                            value="{{ old('customer_name', $task->customer_name ?? '') }}">
+                    </div>
+
+                    <!-- Customer Phone -->
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Customer Phone</label>
+
+                        <input type="text" name="customer_phone" class="form-control" maxlength="10"
+                            value="{{ old('customer_phone', $task->customer_phone ?? '') }}">
+                    </div>
+
                     <!-- Assign To -->
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Assign To</label>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">Assign To</label>
 
                         <select name="assigned_to" class="form-select">
 
@@ -199,24 +215,27 @@
                     </div>
 
                     <!-- Work Note -->
-                    <div class="col-md-12 mb-3">
-                        <label class="form-label">Work Note</label>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Work Note</label>
 
                         <textarea name="work_notes" class="form-control" rows="2">{{ old('work_notes', $task->work_notes ?? '') }}</textarea>
                     </div>
 
                     <!-- Description -->
-                    <div class="col-md-12 mb-3">
-                        <label class="form-label">Description</label>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Description</label>
 
                         <textarea name="description" class="form-control" rows="3">{{ old('description', $task->description ?? '') }}</textarea>
                     </div>
 
                 </div>
 
-                <button type="submit" class="btn btn-success px-4">
-                    {{ $task ? 'Update Task' : 'Save Task' }}
-                </button>
+                <!-- Submit -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success px-4">
+                        {{ $task ? 'Update Task' : 'Save Task' }}
+                    </button>
+                </div>
 
             </form>
 
@@ -272,6 +291,11 @@
                     fillSiteData();
                 }
             }
+        });
+
+        // Allow only 10 digit phone
+        document.querySelector('input[name="customer_phone"]').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
         });
     </script>
 @endsection

@@ -137,34 +137,36 @@ class TaskManagement extends Controller
     //     ]);
     // }
     private function validateData(Request $request)
-{
-    return $request->validate([
+    {
+        return $request->validate([
 
-        'site_id'      => 'nullable|exists:sites,id',
+            'site_id'      => 'nullable|exists:sites,id',
 
-        'task_name'    => 'required|string|max:255',
+            'task_name'    => 'required|string|max:255',
 
-        'assigned_to'  => 'required',
+            'assigned_to'  => 'required',
+            'customer_name'  => 'nullable|string|max:255',
+            'customer_phone' => 'nullable|digits:10',
 
-        'address'      => 'nullable|string',
+            'address'      => 'nullable|string',
 
-        'status'       => 'required|in:assigned,in_progress,completed',
+            'status'       => 'required|in:assigned,in_progress,completed',
 
-        'task_type'    => 'nullable|string|in:site,manual',
+            'task_type'    => 'nullable|string|in:site,manual',
 
-        'title'        => 'nullable|string|max:255',
+            'title'        => 'nullable|string|max:255',
 
-        'priority'     => 'nullable|in:low,medium,high,urgent',
+            'priority'     => 'nullable|in:low,medium,high,urgent',
 
-        'description'  => 'nullable|string',
+            'description'  => 'nullable|string',
 
-        'work_notes'   => 'nullable|string',
+            'work_notes'   => 'nullable|string',
 
-        'due_date'     => 'nullable|date',
+            'due_date'     => 'nullable|date',
 
-        'latitude'     => 'nullable',
+            'latitude'     => 'nullable',
 
-        'longitude'    => 'nullable',
-    ]);
-}
+            'longitude'    => 'nullable',
+        ]);
+    }
 }
