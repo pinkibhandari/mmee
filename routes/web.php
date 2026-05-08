@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\{TaskManagement, RoleController, PermissionController, ServiceController, SiteController, UserController};
+use App\Http\Controllers\Admin\{TaskManagement, RoleController, PermissionController,SiteController, UserController,CmsPageController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,8 +23,8 @@ Route::middleware('auth')->group(function () {
     // ✅ FIX: admin routes inside auth
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('tasks', TaskManagement::class);
-        Route::resource('services', ServiceController::class);
         Route::resource('sites', SiteController::class);
+    Route::resource('cms-pages', CmsPageController::class);
 
         Route::resource('users', UserController::class);
         Route::resource('roles', RoleController::class);

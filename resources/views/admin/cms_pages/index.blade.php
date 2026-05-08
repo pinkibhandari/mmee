@@ -5,10 +5,10 @@
 
         <!-- Card Header -->
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="mb-0"><strong>Service List</strong></h6>
+            <h6 class="mb-0"><strong>CMS Pages List</strong></h6>
 
-            <a href="{{ route('admin.services.create') }}" class="btn btn-sm btn-primary">
-                <i class="fas fa-plus me-1"></i> Add Service
+            <a href="{{ route('admin.cms-pages.create') }}" class="btn btn-sm btn-primary">
+                <i class="fas fa-plus me-1"></i> Add Page
             </a>
         </div>
 
@@ -22,17 +22,15 @@
             @endif
         </div>
 
-        <!-- Table -->
+        <!-- Card Body -->
         <div class="card-body table-responsive pt-2">
 
             <table class="table table-bordered table-hover align-middle">
-                <thead class="text-center thead-light">
+                <thead class="thead-light text-center">
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Created At</th>
-
+                        <th>Title</th>
+                        <th>Slug</th>
                         <th>Status</th>
                         <th width="150">Action</th>
                     </tr>
@@ -40,31 +38,38 @@
 
                 <tbody class="text-center">
 
-                    @forelse($services as $key => $service)
+                    @forelse($pages as $page)
                         <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $service->name }}</td>
-                            <td>{{ Str::limit($service->description, 50) }}</td>
-                            <td>{{ $service->created_at->format('d M Y') }}</td>
-                            <!-- Status Badge (Task Style Same) -->
+                            <!-- Serial No -->
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $page->title }}</td>
+                            <td>{{ $page->slug }}</td>
+
+                            <!-- Status -->
                             <td>
-                                @if ($service->status == 1)
-                                    <span class="badge bg-success px-3 py-2 text-white">Active</span>
+                                @if ($page->status == 1)
+                                    <span class="badge bg-success text-white px-3 py-2">
+                                        Active
+                                    </span>
                                 @else
-                                    <span class="badge bg-danger px-3 py-2 text-white">Inactive</span>
+                                    <span class="badge bg-secondary px-3 py-2">
+                                        Inactive
+                                    </span>
                                 @endif
                             </td>
 
-                            <!-- Action -->
+                            <!-- Actions -->
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
 
-                                    <a href="{{ route('admin.services.edit', $service->id) }}"
+                                    <!-- Edit -->
+                                    <a href="{{ route('admin.cms-pages.edit', $page->id) }}"
                                         class="btn btn-sm btn-outline-primary" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST"
+                                    <!-- Delete -->
+                                    <form action="{{ route('admin.cms-pages.destroy', $page->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure?')">
 
                                         @csrf
@@ -82,12 +87,13 @@
 
                     @empty
                         <tr>
-                            <td colspan="5">No services found</td>
+                            <td colspan="5">No CMS Pages Found</td>
                         </tr>
                     @endforelse
 
                 </tbody>
             </table>
+
 
         </div>
     </div>

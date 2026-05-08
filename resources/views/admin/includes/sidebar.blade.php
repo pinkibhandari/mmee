@@ -15,49 +15,48 @@
         {{-- <div class="sidebar-heading">
         Features
       </div> --}}
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
-        aria-expanded="true" aria-controls="collapseUsers">
-        <i class="fas fa-users"></i>
-        <span>User Management</span>
-    </a>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
+                aria-expanded="true" aria-controls="collapseUsers">
+                <i class="fas fa-users"></i>
+                <span>User Management</span>
+            </a>
 
-    <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers"
-        data-parent="#accordionSidebar">
+            <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordionSidebar">
 
-        <div class="bg-white py-2 collapse-inner rounded">
+                <div class="bg-white py-2 collapse-inner rounded">
 
-            <!-- Users -->
-            {{-- <a class="collapse-item" href="{{ route('admin.users.index') }}">
+                    <!-- Users -->
+                    {{-- <a class="collapse-item" href="{{ route('admin.users.index') }}">
                 <i class="fas fa-user me-2"></i> Users 
             </a> --}}
 
-@can('can_view_users')
-    <a class="collapse-item" href="{{ route('admin.users.index') }}">
-        <i class="fas fa-user me-2"></i> Users 
-    </a>
-@endcan
-            <!-- Roles -->
-            {{-- <a class="collapse-item" href="{{ route('admin.roles.index') }}">
+                    @can('can_view_users')
+                        <a class="collapse-item" href="{{ route('admin.users.index') }}">
+                            <i class="fas fa-user me-2"></i> Users
+                        </a>
+                    @endcan
+                    <!-- Roles -->
+                    {{-- <a class="collapse-item" href="{{ route('admin.roles.index') }}">
                  <i class="fas fa-user-tag me-2"></i> Roles
             </a> --}}
-@can('can_view_roles')
-    <a class="collapse-item" href="{{ route('admin.roles.index') }}">
-        <i class="fas fa-user-tag me-2"></i> Roles
-    </a>
-@endcan
-            <!-- Permissions -->
-            {{-- <a class="collapse-item" href="{{ route('admin.permissions.index') }}">
+                    @can('can_view_roles')
+                        <a class="collapse-item" href="{{ route('admin.roles.index') }}">
+                            <i class="fas fa-user-tag me-2"></i> Roles
+                        </a>
+                    @endcan
+                    <!-- Permissions -->
+                    {{-- <a class="collapse-item" href="{{ route('admin.permissions.index') }}">
                 <i class="fas fa-key me-2"></i> Permissions
             </a> --}}
-@can('can_view_permission')
-    <a class="collapse-item" href="{{ route('admin.permissions.index') }}">
-        <i class="fas fa-key me-2"></i> Permissions
-    </a>
-@endcan
-        </div>
-    </div>
-</li>
+                    @can('can_view_permission')
+                        <a class="collapse-item" href="{{ route('admin.permissions.index') }}">
+                            <i class="fas fa-key me-2"></i> Permissions
+                        </a>
+                    @endcan
+                </div>
+            </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
                 aria-expanded="true" aria-controls="collapseBootstrap">
@@ -76,34 +75,7 @@
 
             </div>
         </li>
-        {{-- Service Management --}}
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseService"
-                aria-expanded="true" aria-controls="collapseService">
-                <i class="fas fa-cogs"></i>
-                <span>Service Management</span>
-            </a>
 
-            <div id="collapseService" class="collapse" aria-labelledby="headingService" data-parent="#accordionSidebar">
-
-                <div class="bg-white py-2 collapse-inner rounded">
-
-                    <!-- Add Service -->
-                    {{-- <a class="collapse-item {{ request()->routeIs('admin.services.create') ? 'active' : '' }}"
-               href="#">
-                <i class="fas fa-plus-circle me-2"></i> Add Service
-            </a> --}}
-
-                    <!-- Service List -->
-                    <a class="collapse-item {{ request()->routeIs('admin.services.index') ? 'active' : '' }}"
-                        href="{{ route('admin.services.index') }}">
-                        <i class="fas fa-list me-2"></i> Service List
-                    </a>
-
-                </div>
-
-            </div>
-        </li>
         {{-- Site Management --}}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSite"
@@ -123,6 +95,34 @@
                 </div>
 
             </div>
+        </li>
+        {{-- CMS Pages --}}
+        <li class="nav-item">
+
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCms"
+                aria-expanded="true" aria-controls="collapseCms">
+
+                <i class="fas fa-file-alt"></i>
+
+                <span>CMS Management</span>
+
+            </a>
+
+            <div id="collapseCms" class="collapse" aria-labelledby="headingCms" data-parent="#accordionSidebar">
+
+                <div class="bg-white py-2 collapse-inner rounded">
+
+                    <a class="collapse-item" href="{{ route('admin.cms-pages.index') }}">
+
+                        <i class="fas fa-list me-2"></i>
+                        CMS Page List
+
+                    </a>
+
+                </div>
+
+            </div>
+
         </li>
         {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
