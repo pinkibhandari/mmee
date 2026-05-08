@@ -9,11 +9,19 @@ use Spatie\Permission\Models\Permission;
 class PermissionController extends Controller
 {
     // 👉 List
-    public function index()
-    {
-        $permissions = Permission::latest()->get();
-        return view('admin.permissions.index', compact('permissions'));
+    public function index(Request $request)
+{
+    $query = Permission::query();
+
+    // 🔍 Search
+    if ($request->search) {
+        $query->where('name', 'like', '%' . $request->search . '%');
     }
+
+    $permissions = $query->latest()->paginate(10);
+
+    return view('admin.permissions.index', compact('permissions'));
+}
 
     // 👉 Create
     public function create()
