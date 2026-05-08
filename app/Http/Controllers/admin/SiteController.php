@@ -88,7 +88,7 @@ class SiteController extends Controller
 
         // Update
         $site->update([
-            'name' => $request->name,
+            'site_name' => $request->name,
             'address' => $request->address,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
