@@ -50,8 +50,8 @@ class CmsPageController extends Controller
     // STORE
     public function store(Request $request)
     {
+        
         $data = $this->validateData($request);
-
         $data['slug'] = $this->generateUniqueSlug($data['title']);
 
         CmsPage::create($data);
@@ -121,7 +121,7 @@ class CmsPageController extends Controller
 
             'title'   => 'required|string|max:255',
 
-            'slug'    => 'nullable|string|max:255',
+            // 'slug'    => 'nullable|string|max:255',
 
 
             'content' => 'required|string',

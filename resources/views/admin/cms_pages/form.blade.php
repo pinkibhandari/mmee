@@ -57,7 +57,7 @@
                     </div>
 
                     <!-- Slug -->
-                    <div class="col-lg-4 col-md-6 col-12">
+                    <!-- <div class="col-lg-4 col-md-6 col-12">
 
                         <label class="form-label fw-semibold">
                             Slug
@@ -73,7 +73,7 @@
                             </div>
                         @enderror
 
-                    </div>
+                    </div> -->
 
                     <!-- Status -->
                     <div class="col-lg-4 col-md-6 col-12">
@@ -81,6 +81,7 @@
                         <label class="form-label fw-semibold">
                             Status
                         </label>
+                        <br>
 
                         <select name="status" class="form-select @error('status') is-invalid @enderror">
 
@@ -114,15 +115,10 @@
                         <label class="form-label fw-semibold">
                             Content
                         </label>
-
-                        <!-- Hidden textarea -->
-                        <textarea name="content" id="content" hidden>{{ old('content', $page->content) }}</textarea>
-
                         <!-- Quill Editor -->
-                        <div id="editor" style="height:250px;">
-                            {!! old('content', $page->content) !!}
+                        <div id="editor" style="height:250px;">   
                         </div>
-
+                        <input type="hidden" name="content" id="editor-content" value="{{ old('content', $page->content) }}">
                         @error('content')
                             <div class="text-danger mt-1">
                                 {{ $message }}
@@ -155,21 +151,8 @@
     <!-- Quill JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
-    <script>
+  <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            // Slug Generate
-            document.getElementById('title').addEventListener('keyup', function() {
-
-                let slug = this.value
-                    .toLowerCase()
-                    .replace(/[^a-z0-9]+/g, '-')
-                    .replace(/^-+|-+$/g, '');
-
-                document.getElementById('slug').value = slug;
-
-            });
-
             // Initialize Quill
             var quill = new Quill('#editor', {
                 theme: 'snow',
@@ -178,48 +161,28 @@
                     toolbar: [
                         ['bold', 'italic', 'underline'],
                         [{
-                            list: 'ordered'
+                            'list': 'ordered'
                         }, {
-                            list: 'bullet'
+                            'list': 'bullet'
                         }],
                         ['link', 'image']
                     ]
                 }
             });
 
-            // Load old content into editor
-            let oldContent = document.getElementById('content').value;
-
-            if (oldContent.trim() !== '') {
-                quill.root.innerHTML = oldContent;
+            // Load old/existing content
+            var contentInput = document.getElementById('editor-content');
+            //  console.log('Existing content:', contentInput.value);
+            if (contentInput.value) {
+                quill.root.innerHTML = contentInput.value;
             }
 
-            // Form submit
-            document.getElementById('cmsPageForm').onsubmit = function(e) {
-
-                // Get editor HTML
-                let html = quill.root.innerHTML;
-
-                // Remove empty tags check
-                let text = quill.getText().trim();
-
-                if (text === '') {
-
-                    e.preventDefault();
-
-                    alert('Content field is required');
-
-                    return false;
-                }
-
-                // Set hidden textarea value
-                document.getElementById('content').value = html;
-
-                console.log(html);
-
-                return true;
-            };
-
+            // On form submit, update hidden input
+            var form = document.getElementById('cmsPageForm');
+            form.addEventListener('submit', function() {
+                contentInput.value = quill.root.innerHTML.trim();
+                //  console.log('Existing content:', contentInput.value);
+            });
         });
     </script>
 @endsection
