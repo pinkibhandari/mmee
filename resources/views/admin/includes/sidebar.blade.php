@@ -124,6 +124,35 @@
             </div>
 
         </li>
+        {{-- Attendance --}}
+        <li class="nav-item">
+
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAttendance"
+                aria-expanded="true" aria-controls="collapseAttendance">
+
+                <i class="fas fa-calendar-check"></i>
+
+                <span>Attendance Management</span>
+
+            </a>
+
+            <div id="collapseAttendance" class="collapse" aria-labelledby="headingAttendance"
+                data-parent="#accordionSidebar">
+
+                <div class="bg-white py-2 collapse-inner rounded">
+
+                    <a class="collapse-item" href="{{ route('admin.attendance.index') }}">
+
+                        <i class="fas fa-list me-2"></i>
+                        Attendance List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </li>
         {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">

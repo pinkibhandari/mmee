@@ -1,84 +1,160 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CmsPage;
+use Illuminate\Support\Str;
 
 class CmsPageController extends Controller
 {
-    // LIST (Pagination)
-    public function index()
+    // LIST
+    public function index(Request $request)
     {
-        $pages = CmsPage::latest()->get();
+        $pages = CmsPage::query()
+
+            // Search
+            ->when($request->filled('search'), function ($q) use ($request) {
+
+                $q->where(function ($query) use ($request) {
+
+                    $query->where('title', 'like', '%' . $request->search . '%')
+                          ->orWhere('slug', 'like', '%' . $request->search . '%');
+
+                });
+
+            })
+
+            // Status Filter
+            ->when($request->filled('status'), function ($q) use ($request) {
+
+                $q->where('status', $request->status);
+
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
         return view('admin.cms_pages.index', compact('pages'));
     }
 
     // CREATE FORM
     public function create()
     {
-        return view('admin.cms_pages.form');
+        return view('admin.cms_pages.form', [
+            'page' => new CmsPage()
+        ]);
     }
 
-    // STORE DATA
+    // STORE
     public function store(Request $request)
     {
-        $request->validate([
-            'title'   => 'required',
-            'slug'    => 'required|unique:cms_pages,slug',
-            'content' => 'nullable',
-            'status'  => 'required'
-        ]);
+        $data = $this->validateData($request);
 
-        CmsPage::create([
-            'title'   => $request->title,
-            'slug'    => $request->slug,
-            'content' => $request->content,
-            'status'  => $request->status,
-        ]);
+        $data['slug'] = $this->generateUniqueSlug($data['title']);
 
-        return redirect()->route('admin.cms-pages.index')
+        CmsPage::create($data);
+
+        return redirect()
+            ->route('admin.cms-pages.index')
             ->with('success', 'CMS Page created successfully');
     }
 
-    // EDIT FORM
-    public function edit($id)
+    // EDIT
+    public function edit(CmsPage $cms_page)
     {
-        $page = CmsPage::findOrFail($id);
-        return view('admin.cms_pages.form', compact('page'));
+        return view('admin.cms_pages.form', [
+            'page' => $cms_page
+        ]);
     }
 
-    // UPDATE DATA
-    public function update(Request $request, $id)
+    // UPDATE
+    public function update(Request $request, CmsPage $cms_page)
     {
-        $page = CmsPage::findOrFail($id);
+        // AJAX Status Update
+        if ($request->has('status') && !$request->has('title')) {
 
-        $request->validate([
-            'title'   => 'required',
-            'slug'    => 'required|unique:cms_pages,slug,' . $id,
-            'content' => 'nullable',
-            'status'  => 'required'
-        ]);
+            $cms_page->update([
+                'status' => $request->status
+            ]);
 
-        $page->update([
-            'title'   => $request->title,
-            'slug'    => $request->slug,
-            'content' => $request->content,
-            'status'  => $request->status,
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Status updated successfully'
+            ]);
+        }
 
-        return redirect()->route('admin.cms-pages.index')
+        $data = $this->validateData($request);
+
+        // Update Slug if Title Changed
+        if ($cms_page->title !== $data['title']) {
+
+            $data['slug'] = $this->generateUniqueSlug(
+                $data['title'],
+                $cms_page->id
+            );
+
+        }
+
+        $cms_page->update($data);
+
+        return redirect()
+            ->route('admin.cms-pages.index')
             ->with('success', 'CMS Page updated successfully');
     }
 
     // DELETE
-    public function destroy($id)
+    public function destroy(CmsPage $cms_page)
     {
-        $page = CmsPage::findOrFail($id);
-        $page->delete();
+        $cms_page->delete();
 
-        return redirect()->route('admin.cms-pages.index')
+        return redirect()
+            ->route('admin.cms-pages.index')
             ->with('success', 'CMS Page deleted successfully');
+    }
+
+    // VALIDATION
+    private function validateData(Request $request)
+    {
+        return $request->validate([
+
+            'title'   => 'required|string|max:255',
+
+            'slug'    => 'nullable|string|max:255',
+
+
+            'content' => 'required|string',
+
+            'status'  => 'required|in:0,1',
+
+        ]);
+    }
+
+    // UNIQUE SLUG
+    private function generateUniqueSlug($title, $ignoreId = null)
+    {
+        $slug = Str::slug($title);
+
+        $originalSlug = $slug;
+
+        $count = 1;
+
+        while (
+
+            CmsPage::when($ignoreId, fn($q) =>
+                $q->where('id', '!=', $ignoreId)
+            )
+
+            ->where('slug', $slug)
+            ->exists()
+
+        ) {
+
+            $slug = $originalSlug . '-' . $count++;
+
+        }
+
+        return $slug;
     }
 }

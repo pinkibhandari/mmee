@@ -2,6 +2,62 @@
 
 @section('content')
     <div class="card shadow mb-4 border-0">
+        <style>
+            .custom-dropdown {
+                width: 100%;
+            }
+
+            #selectedUserBtn {
+                height: 48px;
+                border-radius: 10px;
+                background: #fff;
+                border: 1px solid #dcdcdc;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            #selectedUserBtn:focus {
+                box-shadow: none;
+                border-color: #0d6efd;
+            }
+
+            .dropdown-box {
+                position: absolute;
+                width: 100%;
+                background: #fff;
+                border: 1px solid #e5e5e5;
+                border-radius: 12px;
+                margin-top: 8px;
+                z-index: 999;
+                overflow: hidden;
+            }
+
+            .user-list {
+                max-height: 250px;
+                overflow-y: auto;
+            }
+
+            .user-item {
+                cursor: pointer;
+                transition: 0.2s;
+                border-bottom: 1px solid #f1f1f1;
+            }
+
+            .user-item:hover {
+                background: #f5f7ff;
+                color: #0d6efd;
+            }
+
+            #searchUser {
+                border-radius: 8px;
+                height: 42px;
+            }
+
+            #searchUser:focus {
+                box-shadow: none;
+                border-color: #0d6efd;
+            }
+        </style>
 
         <!-- Header -->
         <div class="card-header d-flex justify-content-between align-items-center py-3">
@@ -195,7 +251,7 @@
                     </div>
 
                     <!-- Assign To -->
-                    <div class="col-lg-4 col-md-6 col-12">
+                    {{-- <div class="col-lg-4 col-md-6 col-12">
                         <label class="form-label fw-semibold">Assign To</label>
 
                         <select name="assigned_to" class="form-select">
@@ -212,7 +268,67 @@
                             @endforeach
 
                         </select>
+                    </div> --}}
+                    <!-- Assign To -->
+                    <div class="col-lg-4 col-md-6 col-12">
+
+                        <label class="form-label fw-semibold mb-2">
+                            Assign To
+                        </label>
+
+                        <div class="custom-dropdown position-relative">
+
+                            <!-- Selected Button -->
+                            <button type="button"
+                                class="form-control text-start d-flex justify-content-between align-items-center"
+                                id="selectedUserBtn">
+
+                                <span id="selectedUserText">
+                                    @php
+                                        $selectedUser = $users
+                                            ->where('id', old('assigned_to', $task->assigned_to ?? ''))
+                                            ->first();
+                                    @endphp
+
+                                    {{ $selectedUser->name ?? 'Select User' }}
+                                </span>
+
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+
+                            <!-- Dropdown Box -->
+                            <div class="dropdown-box shadow-sm d-none" id="dropdownBox">
+
+                                <!-- Search -->
+                                <div class="p-2 border-bottom bg-white sticky-top">
+                                    <input type="text" class="form-control" id="searchUser"
+                                        placeholder="Search User...">
+                                </div>
+
+                                <!-- User List -->
+                                <div class="user-list">
+
+                                    @foreach ($users as $user)
+                                        <div class="user-item px-3 py-2" data-id="{{ $user->id }}"
+                                            data-name="{{ $user->name }}">
+
+                                            {{ $user->name }}
+
+                                        </div>
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
+                            <!-- Hidden Input -->
+                            <input type="hidden" name="assigned_to" id="assigned_to"
+                                value="{{ old('assigned_to', $task->assigned_to ?? '') }}">
+
+                        </div>
                     </div>
+
+
 
                     <!-- Work Note -->
                     <div class="col-12">
@@ -296,6 +412,74 @@
         // Allow only 10 digit phone
         document.querySelector('input[name="customer_phone"]').addEventListener('input', function(e) {
             this.value = this.value.replace(/\D/g, '').slice(0, 10);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const dropdownBtn = document.getElementById("selectedUserBtn");
+            const dropdownBox = document.getElementById("dropdownBox");
+            const searchInput = document.getElementById("searchUser");
+            const userItems = document.querySelectorAll(".user-item");
+            const selectedText = document.getElementById("selectedUserText");
+            const hiddenInput = document.getElementById("assigned_to");
+
+            // Toggle Dropdown
+            dropdownBtn.addEventListener("click", function() {
+
+                dropdownBox.classList.toggle("d-none");
+
+                if (!dropdownBox.classList.contains("d-none")) {
+                    searchInput.focus();
+                }
+
+            });
+
+            // Search User
+            searchInput.addEventListener("keyup", function() {
+
+                let value = this.value.toLowerCase();
+
+                userItems.forEach(function(item) {
+
+                    let text = item.innerText.toLowerCase();
+
+                    if (text.includes(value)) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+
+                });
+
+            });
+
+            // Select User
+            userItems.forEach(function(item) {
+
+                item.addEventListener("click", function() {
+
+                    let userId = this.dataset.id;
+                    let userName = this.dataset.name;
+
+                    selectedText.innerText = userName;
+                    hiddenInput.value = userId;
+
+                    dropdownBox.classList.add("d-none");
+
+                });
+
+            });
+
+            // Close Outside Click
+            document.addEventListener("click", function(e) {
+
+                if (!e.target.closest(".custom-dropdown")) {
+                    dropdownBox.classList.add("d-none");
+                }
+
+            });
+
         });
     </script>
 @endsection

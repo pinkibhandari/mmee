@@ -1,104 +1,225 @@
 @extends('admin.layouts.app')
 
+@section('title', $page->id ? 'Edit Page' : 'Create Page')
+
 @section('content')
 
-<div class="card shadow mb-4">
+    <div class="card shadow mb-4 border-0">
 
-    <!-- Header -->
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0">
-            <strong>
-                {{ isset($page) ? 'Edit CMS Page' : 'Create CMS Page' }}
-            </strong>
-        </h6>
+        <!-- Header -->
+        <div class="card-header d-flex justify-content-between align-items-center py-3">
 
-        <a href="{{ route('admin.cms-pages.index') }}" class="btn btn-sm btn-secondary">
-            Back
-        </a>
+            <h6 class="mb-0">
+                <strong>
+                    {{ $page->id ? 'Edit CMS Page' : 'Create CMS Page' }}
+                </strong>
+            </h6>
+
+            <a href="{{ route('admin.cms-pages.index') }}" class="btn btn-sm btn-secondary">
+
+                Back
+
+            </a>
+
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+            <form id="cmsPageForm" method="POST"
+                action="{{ $page->id ? route('admin.cms-pages.update', $page->id) : route('admin.cms-pages.store') }}">
+
+                @csrf
+
+                @if ($page->id)
+                    @method('PUT')
+                @endif
+
+                <div class="row g-3">
+
+                    <!-- Title -->
+                    <div class="col-lg-4 col-md-6 col-12">
+
+                        <label class="form-label fw-semibold">
+                            Page Title
+                        </label>
+
+                        <input type="text" name="title" id="title"
+                            class="form-control @error('title') is-invalid @enderror" placeholder="Enter page title"
+                            value="{{ old('title', $page->title) }}">
+
+                        @error('title')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="col-lg-4 col-md-6 col-12">
+
+                        <label class="form-label fw-semibold">
+                            Slug
+                        </label>
+
+                        <input type="text" name="slug" id="slug"
+                            class="form-control @error('slug') is-invalid @enderror" placeholder="Enter slug"
+                            value="{{ old('slug', $page->slug) }}">
+
+                        @error('slug')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-lg-4 col-md-6 col-12">
+
+                        <label class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select name="status" class="form-select @error('status') is-invalid @enderror">
+
+                            <option value="">
+                                Select Status
+                            </option>
+
+                            <option value="1" {{ old('status', $page->status) == 1 ? 'selected' : '' }}>
+                                Active
+                            </option>
+
+                            <option value="0" {{ old('status', $page->status) == 0 ? 'selected' : '' }}>
+                                Inactive
+                            </option>
+
+                        </select>
+
+                        @error('status')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                  
+
+                    <!-- Content -->
+                    <div class="col-12">
+
+                        <label class="form-label fw-semibold">
+                            Content
+                        </label>
+
+                        <!-- Hidden textarea -->
+                        <textarea name="content" id="content" hidden>{{ old('content', $page->content) }}</textarea>
+
+                        <!-- Quill Editor -->
+                        <div id="editor" style="height:250px;">
+                            {!! old('content', $page->content) !!}
+                        </div>
+
+                        @error('content')
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                </div>
+
+                <!-- Submit -->
+                <div class="mt-4">
+
+                    <button type="submit" class="btn btn-primary px-4">
+
+                        {{ $page->id ? 'Update Page' : 'Save Page' }}
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-    <div class="card-body">
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
-        <form action="{{ isset($page) 
-                ? route('admin.cms-pages.update', $page->id) 
-                : route('admin.cms-pages.store') }}"
-              method="POST">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
 
-            @csrf
-            @if(isset($page))
-                @method('PUT')
-            @endif
+            // Slug Generate
+            document.getElementById('title').addEventListener('keyup', function() {
 
-            <!-- Title -->
-            <div class="mb-3">
-                <label>Title</label>
-                <input type="text"
-                       name="title"
-                       id="title"
-                       class="form-control"
-                       value="{{ $page->title ?? old('title') }}"
-                       required>
-            </div>
+                let slug = this.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
 
-            <!-- Slug -->
-            <div class="mb-3">
-                <label>Slug</label>
-                <input type="text"
-                       name="slug"
-                       id="slug"
-                       class="form-control"
-                       value="{{ $page->slug ?? old('slug') }}"
-                       required>
-            </div>
+                document.getElementById('slug').value = slug;
 
-            <!-- Content (CKEditor) -->
-            <div class="mb-3">
-                <label>Content</label>
-                <textarea name="content"
-                          id="content"
-                          class="form-control"
-                          rows="6">{{ $page->content ?? old('content') }}</textarea>
-            </div>
+            });
 
-            <!-- Status -->
-            <div class="mb-3">
-                <label>Status</label>
-                <select name="status" class="form-control">
-                    <option value="1" {{ isset($page) && $page->status == 1 ? 'selected' : '' }}>Active</option>
-                    <option value="0" {{ isset($page) && $page->status == 0 ? 'selected' : '' }}>Inactive</option>
-                </select>
-            </div>
+            // Initialize Quill
+            var quill = new Quill('#editor', {
+                theme: 'snow',
+                placeholder: 'Write page content here...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{
+                            list: 'ordered'
+                        }, {
+                            list: 'bullet'
+                        }],
+                        ['link', 'image']
+                    ]
+                }
+            });
 
-            <button class="btn btn-primary">
-                {{ isset($page) ? 'Update' : 'Save' }}
-            </button>
+            // Load old content into editor
+            let oldContent = document.getElementById('content').value;
 
-        </form>
+            if (oldContent.trim() !== '') {
+                quill.root.innerHTML = oldContent;
+            }
 
-    </div>
-</div>
+            // Form submit
+            document.getElementById('cmsPageForm').onsubmit = function(e) {
 
-@endsection
+                // Get editor HTML
+                let html = quill.root.innerHTML;
 
-@section('scripts')
+                // Remove empty tags check
+                let text = quill.getText().trim();
 
-<!-- Slug Auto Generate -->
-<script>
-document.getElementById('title').addEventListener('keyup', function () {
-    let slug = this.value
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
+                if (text === '') {
 
-    document.getElementById('slug').value = slug;
-});
-</script>
+                    e.preventDefault();
 
-<!-- CKEditor -->
-<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+                    alert('Content field is required');
 
-<script>
-    CKEDITOR.replace('content');
-</script>
+                    return false;
+                }
 
+                // Set hidden textarea value
+                document.getElementById('content').value = html;
+
+                console.log(html);
+
+                return true;
+            };
+
+        });
+    </script>
 @endsection
