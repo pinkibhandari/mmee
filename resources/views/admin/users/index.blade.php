@@ -36,7 +36,7 @@
                         <th>Role</th>
                         <th>Created At</th>
 
-                        @canany(['can_edit_users','can_delete_users'])
+                        @canany(['can_edit_users', 'can_delete_users'])
                             <th width="150">Action</th>
                         @endcanany
                     </tr>
@@ -52,7 +52,7 @@
 
                             <!-- Role -->
                             <td>
-                                @if($user->roles->count())
+                                @if ($user->roles->count())
                                     <span class="badge bg-info px-3 py-2 text-white">
                                         {{ $user->roles->pluck('name')->implode(', ') }}
                                     </span>
@@ -63,33 +63,55 @@
 
                             <td>{{ $user->created_at->format('d M Y') }}</td>
 
-                            @canany(['can_edit_users','can_delete_users'])
-                            <td>
-                                <div class="d-flex justify-content-center gap-2">
+                            @canany(['can_edit_users', 'can_delete_users'])
+                                <td>
+                                    <div class="dropdown">
 
-                                    @can('can_edit_users')
-                                        <a href="{{ route('admin.users.edit', $user->id) }}"
-                                            class="btn btn-sm btn-outline-primary">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    @endcan
+                                        <button class="btn btn-sm btn-icon btn-text-secondary rounded-pill"
+                                            data-bs-toggle="dropdown">
 
-                                    @can('can_delete_users')
-                                        <form action="{{ route('admin.users.destroy', $user->id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure?')">
+                                            <i class="ri-more-2-line"></i>
 
-                                            @csrf
-                                            @method('DELETE')
+                                        </button>
 
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    @endcan
+                                        <ul class="dropdown-menu dropdown-menu-end">
 
-                                </div>
-                            </td>
+                                            {{-- Edit --}}
+                                            @can('can_edit_users')
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ route('admin.users.edit', $user->id) }}">
+
+                                                        <i class="ri-pencil-line me-2"></i>
+                                                        Edit
+
+                                                    </a>
+                                                </li>
+                                            @endcan
+
+                                            {{-- Delete --}}
+                                            @can('can_delete_users')
+                                                <li>
+                                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
+
+                                                        @csrf
+                                                        @method('DELETE')
+
+                                                        <button type="submit" class="dropdown-item text-danger"
+                                                            onclick="return confirm('Are you sure you want to delete this user?')">
+
+                                                            <i class="ri-delete-bin-6-line me-2"></i>
+                                                            Delete
+
+                                                        </button>
+
+                                                    </form>
+                                                </li>
+                                            @endcan
+
+                                        </ul>
+
+                                    </div>
+                                </td>
                             @endcanany
                         </tr>
 

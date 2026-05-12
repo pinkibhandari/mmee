@@ -17,8 +17,7 @@
                 <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2">
 
                     <!-- Search Form -->
-                    <form method="GET"
-                        action="{{ route('admin.cms-pages.index') }}"
+                    <form method="GET" action="{{ route('admin.cms-pages.index') }}"
                         class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
 
                         <!-- Search -->
@@ -28,43 +27,35 @@
                                 Search:
                             </span>
 
-                            <input type="search"
-                                name="search"
-                                value="{{ request('search') }}"
-                                class="form-control form-control-sm"
-                                placeholder="Search pages...">
+                            <input type="search" name="search" value="{{ request('search') }}"
+                                class="form-control form-control-sm" placeholder="Search pages...">
 
                         </div>
 
                         <!-- Status -->
-                        <select name="status"
-                            class="form-select form-select-sm">
+                        <select name="status" class="form-select form-select-sm">
 
                             <option value="">Status</option>
 
-                            <option value="1"
-                                {{ request('status') == '1' ? 'selected' : '' }}>
+                            <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>
                                 Active
                             </option>
 
-                            <option value="0"
-                                {{ request('status') == '0' ? 'selected' : '' }}>
+                            <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
                                 Inactive
                             </option>
 
                         </select>
 
                         <!-- Search Button -->
-                        <button class="btn btn-primary btn-sm"
-                            title="Search Filters">
+                        <button class="btn btn-primary btn-sm" title="Search Filters">
 
                             <i class="ri-search-line"></i>
 
                         </button>
 
                         <!-- Reset -->
-                        <a href="{{ route('admin.cms-pages.index') }}"
-                            class="btn btn-outline-secondary btn-sm"
+                        <a href="{{ route('admin.cms-pages.index') }}" class="btn btn-outline-secondary btn-sm"
                             title="Reset Filters">
 
                             <i class="ri-refresh-line"></i>
@@ -74,8 +65,7 @@
                     </form>
 
                     <!-- Add Button -->
-                    <a href="{{ route('admin.cms-pages.create') }}"
-                        class="btn btn-primary btn-sm text-nowrap">
+                    <a href="{{ route('admin.cms-pages.create') }}" class="btn btn-primary btn-sm text-nowrap">
 
                         <i class="ri-add-line me-1"></i>
                         Add
@@ -92,18 +82,13 @@
         <div class="px-3 pt-3">
 
             @if (session('success'))
-
-                <div class="alert alert-success alert-dismissible fade show"
-                    role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
 
                     {{ session('success') }}
 
-                    <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 
                 </div>
-
             @endif
 
         </div>
@@ -130,7 +115,6 @@
                     <tbody class="text-center">
 
                         @forelse($pages as $page)
-
                             <tr>
 
                                 <!-- Serial No -->
@@ -152,17 +136,13 @@
                                 <td>
 
                                     @if ($page->status == 1)
-
                                         <span class="badge bg-success text-white px-3 py-2">
                                             Active
                                         </span>
-
                                     @else
-
                                         <span class="badge bg-secondary text-white px-3 py-2">
                                             Inactive
                                         </span>
-
                                     @endif
 
                                 </td>
@@ -175,7 +155,7 @@
                                         <button class="btn btn-sm btn-icon btn-text-secondary rounded-pill"
                                             data-bs-toggle="dropdown">
 
-                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="ri-more-2-line"></i>
 
                                         </button>
 
@@ -187,7 +167,7 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.cms-pages.edit', $page->id) }}">
 
-                                                    <i class="fas fa-edit me-2"></i>
+                                                    <i class="ri-pencil-line me-2"></i>
                                                     Edit
 
                                                 </a>
@@ -203,11 +183,10 @@
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit"
-                                                        class="dropdown-item text-danger"
+                                                    <button type="submit" class="dropdown-item text-danger"
                                                         onclick="return confirm('Delete this page?')">
 
-                                                        <i class="fas fa-trash me-2"></i>
+                                                        <i class="ri-delete-bin-6-line me-2"></i>
                                                         Delete
 
                                                     </button>
@@ -228,15 +207,13 @@
 
                             <tr>
 
-                                <td colspan="5"
-                                    class="text-center py-4">
+                                <td colspan="5" class="text-center py-4">
 
                                     No CMS Pages Found
 
                                 </td>
 
                             </tr>
-
                         @endforelse
 
                     </tbody>

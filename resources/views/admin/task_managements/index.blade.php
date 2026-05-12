@@ -113,30 +113,56 @@
 
                             <!-- Actions -->
                             <td>
-                                <div class="d-flex justify-content-center gap-2">
+                                <div class="dropdown">
 
-                                    <!-- View -->
-                                    <a href="{{ route('admin.tasks.show', $task->id) }}"
-                                        class="btn btn-sm btn-outline-info" title="Details">
+                                    <button class="btn btn-sm btn-icon btn-text-secondary rounded-pill"
+                                        data-bs-toggle="dropdown">
 
-                                        <i class="fas fa-eye"></i>
+                                        <i class="ri-more-2-line"></i>
 
-                                    </a>
-                                    <a href="{{ route('admin.tasks.edit', $task->id) }}"
-                                        class="btn btn-sm btn-outline-primary" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                                    </button>
 
-                                    <!-- Delete -->
-                                    <form action="{{ route('admin.tasks.destroy', $task->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure?')">
-                                        @csrf
-                                        @method('DELETE')
+                                    <ul class="dropdown-menu dropdown-menu-end">
 
-                                        <button class="btn btn-sm btn-outline-danger" title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                        <!-- View -->
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.tasks.show', $task->id) }}">
+
+                                                <i class="ri-eye-line me-2"></i>
+                                                Details
+
+                                            </a>
+                                        </li>
+
+                                        <!-- Edit -->
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.tasks.edit', $task->id) }}">
+
+                                                <i class="ri-pencil-line me-2"></i>
+                                                Edit
+
+                                            </a>
+                                        </li>
+
+                                        <!-- Delete -->
+                                        <li>
+                                            <form action="{{ route('admin.tasks.destroy', $task->id) }}" method="POST">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" class="dropdown-item text-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this task?')">
+
+                                                    <i class="ri-delete-bin-6-line me-2"></i>
+                                                    Delete
+
+                                                </button>
+
+                                            </form>
+                                        </li>
+
+                                    </ul>
 
                                 </div>
                             </td>
