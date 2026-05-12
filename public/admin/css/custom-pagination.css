@@ -168,6 +168,10 @@
 }
 
 /* Color-coded tab badges */
+.status-tabs .status-tab-item .tab-count.badge-pending {
+    background-color: #fc544b;
+}
+
 .status-tabs .status-tab-item .tab-count.badge-assigned {
     background-color: #6777ef;
 }

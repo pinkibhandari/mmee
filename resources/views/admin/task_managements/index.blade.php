@@ -25,24 +25,29 @@
         <div class="px-3 pt-2">
 
             <nav class="status-tabs">
-
+                <!-- Pending Tab -->
+                <a href="{{ route('admin.tasks.index', ['status' => 'pending']) }}"
+                    class="status-tab-item {{ $status === 'pending' ? 'active' : '' }}">
+                    Pending
+                    <span class="tab-count badge-pending">{{ $pendingCount }}</span>
+                </a>
                 <!-- Assigned Tab -->
                 <a href="{{ route('admin.tasks.index', ['status' => 'assigned']) }}"
-                   class="status-tab-item {{ $status === 'assigned' ? 'active' : '' }}">
+                    class="status-tab-item {{ $status === 'assigned' ? 'active' : '' }}">
                     Assigned
                     <span class="tab-count badge-assigned">{{ $assignedCount }}</span>
                 </a>
 
                 <!-- In Progress Tab -->
                 <a href="{{ route('admin.tasks.index', ['status' => 'in_progress']) }}"
-                   class="status-tab-item {{ $status === 'in_progress' ? 'active' : '' }}">
+                    class="status-tab-item {{ $status === 'in_progress' ? 'active' : '' }}">
                     In Progress
                     <span class="tab-count badge-in-progress">{{ $inProgressCount }}</span>
                 </a>
 
                 <!-- Completed Tab -->
                 <a href="{{ route('admin.tasks.index', ['status' => 'completed']) }}"
-                   class="status-tab-item {{ $status === 'completed' ? 'active' : '' }}">
+                    class="status-tab-item {{ $status === 'completed' ? 'active' : '' }}">
                     Completed
                     <span class="tab-count badge-completed">{{ $completedCount }}</span>
                 </a>
@@ -82,7 +87,11 @@
                             <!-- Status -->
                             <td>
 
-                                @if ($task->status == 'assigned')
+                                @if ($task->status == 'pending')
+                                    <span class="badge bg-danger text-white px-3 py-2">
+                                        Pending
+                                    </span>
+                                @elseif ($task->status == 'assigned')
                                     <span class="badge bg-primary text-white px-3 py-2">
                                         Assigned
                                     </span>
@@ -107,8 +116,8 @@
                                 <div class="d-flex justify-content-center gap-2">
 
                                     <!-- View -->
-                                    <a href="{{ route('admin.tasks.show', $task->id) }}" class="btn btn-sm btn-outline-info"
-                                        title="Details">
+                                    <a href="{{ route('admin.tasks.show', $task->id) }}"
+                                        class="btn btn-sm btn-outline-info" title="Details">
 
                                         <i class="fas fa-eye"></i>
 

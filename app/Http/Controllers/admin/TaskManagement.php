@@ -15,9 +15,11 @@ class TaskManagement extends Controller
     public function index(Request $request)
     {
         // Current active tab (default: assigned)
-        $status = $request->get('status', 'assigned');
+        $status = $request->get('status', 'pending');
 
         // Tab counts
+        $pendingCount     = Task::where('status', 'pending')->count();
+
         $assignedCount    = Task::where('status', 'assigned')->count();
         $inProgressCount  = Task::where('status', 'in_progress')->count();
         $completedCount   = Task::where('status', 'completed')->count();
@@ -31,6 +33,7 @@ class TaskManagement extends Controller
         return view('admin.task_managements.index', compact(
             'tasks',
             'status',
+            'pendingCount',
             'assignedCount',
             'inProgressCount',
             'completedCount'
@@ -65,8 +68,18 @@ class TaskManagement extends Controller
     {
         // dd($request->all());
         $data = $this->validateData($request);
+
         // Auto set creator
         $data['created_by'] = Auth::id();
+
+        // STATUS LOGIC
+        if (!empty($data['assigned_to'])) {
+
+            $data['status'] = 'assigned';
+        } else {
+
+            $data['status'] = 'pending';
+        }
 
         // Create Task
         $task = Task::create($data);
@@ -162,13 +175,13 @@ class TaskManagement extends Controller
 
             'task_name'    => 'required|string|max:255',
 
-            'assigned_to'  => 'required',
+            'assigned_to'  => 'nullable',
             'customer_name'  => 'nullable|string|max:255',
             'customer_phone' => 'nullable|digits:10',
 
             'address'      => 'nullable|string',
 
-            'status'       => 'required|in:assigned,in_progress,completed',
+            // 'status'       => 'required|in:assigned,in_progress,completed',
 
             'task_type'    => 'nullable|string|in:site,manual',
 
@@ -180,7 +193,9 @@ class TaskManagement extends Controller
 
             'work_notes'   => 'nullable|string',
 
-            'due_date'     => 'nullable|date',
+            'start_date'      => 'nullable|date',
+
+            'end_date'        => 'nullable|date|after_or_equal:start_date',
 
             'latitude'     => 'nullable',
 
