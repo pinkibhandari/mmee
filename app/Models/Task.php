@@ -27,6 +27,10 @@ class Task extends Model
         'customer_phone',
         'started_at',
         'completed_at',
+        'is_work_started',
+        'is_timer_running',
+        'timer_started_at',
+        'total_work_seconds'
     ];
 
     public function creator()
