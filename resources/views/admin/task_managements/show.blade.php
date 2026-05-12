@@ -325,24 +325,41 @@
 
                                 <hr class="opacity-25">
 
-                                <!-- Due Date & Created By -->
+                                <!--  Date & Created By -->
                                 <div class="row">
 
-                                    <!-- Due Date -->
-                                    <div class="col-md-6 mb-3 mb-md-0">
+                                    <!-- Start Date -->
+                                    <div class="col-md-4 mb-3 mb-md-0">
 
                                         <small class="text-muted fw-bold d-block mb-1">
-                                            Due Date :
+                                            Start Date :
                                         </small>
 
                                         <div class="fw-semibold text-dark fs-6">
-                                            {{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('d M Y') : 'N/A' }}
+
+                                            {{ $task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('d M Y') : 'N/A' }}
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- End Date -->
+                                    <div class="col-md-4 mb-3 mb-md-0">
+
+                                        <small class="text-muted fw-bold d-block mb-1">
+                                            End Date :
+                                        </small>
+
+                                        <div class="fw-semibold text-dark fs-6">
+
+                                            {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('d M Y') : 'N/A' }}
+
                                         </div>
 
                                     </div>
 
                                     <!-- Created By -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
 
                                         <small class="text-muted fw-bold d-block mb-1">
                                             Created By :
