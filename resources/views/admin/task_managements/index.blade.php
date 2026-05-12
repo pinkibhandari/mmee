@@ -21,6 +21,36 @@
             @endif
         </div>
 
+        <!-- Status Tabs -->
+        <div class="px-3 pt-2">
+
+            <nav class="status-tabs">
+
+                <!-- Assigned Tab -->
+                <a href="{{ route('admin.tasks.index', ['status' => 'assigned']) }}"
+                   class="status-tab-item {{ $status === 'assigned' ? 'active' : '' }}">
+                    Assigned
+                    <span class="tab-count badge-assigned">{{ $assignedCount }}</span>
+                </a>
+
+                <!-- In Progress Tab -->
+                <a href="{{ route('admin.tasks.index', ['status' => 'in_progress']) }}"
+                   class="status-tab-item {{ $status === 'in_progress' ? 'active' : '' }}">
+                    In Progress
+                    <span class="tab-count badge-in-progress">{{ $inProgressCount }}</span>
+                </a>
+
+                <!-- Completed Tab -->
+                <a href="{{ route('admin.tasks.index', ['status' => 'completed']) }}"
+                   class="status-tab-item {{ $status === 'completed' ? 'active' : '' }}">
+                    Completed
+                    <span class="tab-count badge-completed">{{ $completedCount }}</span>
+                </a>
+
+            </nav>
+
+        </div>
+
         <!-- Card Body -->
         <div class="card-body table-responsive pt-2">
 
@@ -47,7 +77,6 @@
                             <td>{{ $task->task_code }}</td>
                             <td>{{ $task->task_name }}</td>
                             <td>{{ $task->employee->name ?? 'N/A' }}</td>
-                            {{-- <td>{{ $task->assigned_to ?? 'N/A' }}</td> --}}
                             <td>{{ $task->address ?? '-' }}</td>
 
                             <!-- Status -->
@@ -77,7 +106,7 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
 
-                                    <!-- Edit -->
+                                    <!-- View -->
                                     <a href="{{ route('admin.tasks.show', $task->id) }}" class="btn btn-sm btn-outline-info"
                                         title="Details">
 
@@ -106,7 +135,9 @@
 
                     @empty
                         <tr>
-                            <td colspan="7">No Tasks Found</td>
+                            <td colspan="7">
+                                No {{ ucfirst(str_replace('_', ' ', $status)) }} Tasks Found
+                            </td>
                         </tr>
                     @endforelse
 
@@ -114,8 +145,8 @@
             </table>
 
             <!-- Pagination -->
-            <div class="mt-3 d-flex justify-content-end">
-                {{ $tasks->links() }}
+            <div class="mt-3">
+                {{ $tasks->links('vendor.pagination.custom') }}
             </div>
 
         </div>

@@ -44,9 +44,9 @@
 
                 <tbody class="text-center">
 
-                    @forelse($users as $key => $user)
+                    @forelse($users as $user)
                         <tr>
-                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $users->firstItem() + $loop->index }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
 
@@ -101,6 +101,11 @@
 
                 </tbody>
             </table>
+
+            <!-- Pagination -->
+            <div class="mt-3">
+                {{ $users->links('vendor.pagination.custom') }}
+            </div>
 
         </div>
     </div>

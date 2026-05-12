@@ -12,11 +12,29 @@ use App\Models\User;
 class TaskManagement extends Controller
 {
     // 🔹 LIST
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::latest()->paginate(10);
+        // Current active tab (default: assigned)
+        $status = $request->get('status', 'assigned');
 
-        return view('admin.task_managements.index', compact('tasks'));
+        // Tab counts
+        $assignedCount    = Task::where('status', 'assigned')->count();
+        $inProgressCount  = Task::where('status', 'in_progress')->count();
+        $completedCount   = Task::where('status', 'completed')->count();
+
+        // Filtered & paginated tasks
+        $tasks = Task::where('status', $status)
+            ->latest()
+            ->paginate(10)
+            ->appends(['status' => $status]);
+
+        return view('admin.task_managements.index', compact(
+            'tasks',
+            'status',
+            'assignedCount',
+            'inProgressCount',
+            'completedCount'
+        ));
     }
 
     // 🔹 CREATE

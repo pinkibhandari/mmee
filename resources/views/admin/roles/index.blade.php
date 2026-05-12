@@ -45,10 +45,10 @@
 
             <tbody class="text-center">
 
-                @forelse($roles as $key => $role)
+                @forelse($roles as $role)
                     <tr>
 
-                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $roles->firstItem() + $loop->index }}</td>
                         <td>{{ $role->name }}</td>
 
                         <td>
@@ -99,6 +99,11 @@
             </tbody>
 
         </table>
+
+        <!-- Pagination -->
+        <div class="mt-3">
+            {{ $roles->links('vendor.pagination.custom') }}
+        </div>
 
     </div>
 </div>

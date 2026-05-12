@@ -141,8 +141,10 @@
     </div>
 
     <!-- Pagination -->
-    <div class="d-flex justify-content-center justify-content-md-end px-3 px-md-4 pb-3">
-        {{ $permissions->links('pagination::bootstrap-5') }}
+    <div class="px-3 px-md-4 pb-3">
+
+        {{ $permissions->links('vendor.pagination.custom') }}
+
     </div>
 
 </div>
