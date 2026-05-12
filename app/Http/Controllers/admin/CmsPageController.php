@@ -33,7 +33,7 @@ class CmsPageController extends Controller
 
             })
             ->latest()
-            ->paginate(2)
+            ->paginate(10)
             ->withQueryString();
 
         return view('admin.cms_pages.index', compact('pages'));

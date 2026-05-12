@@ -57,24 +57,46 @@
 
                             <!-- Action -->
                             <td>
-                                <div class="d-flex justify-content-center gap-2">
+                                <div class="dropdown">
 
-                                    <a href="{{ route('admin.sites.edit', $site->id) }}"
-                                        class="btn btn-sm btn-outline-primary" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                                    <button class="btn btn-sm btn-icon btn-text-secondary rounded-pill"
+                                        data-bs-toggle="dropdown">
 
-                                    <form action="{{ route('admin.sites.destroy', $site->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure?')">
+                                        <i class="ri-more-2-line"></i>
 
-                                        @csrf
-                                        @method('DELETE')
+                                    </button>
 
-                                        <button class="btn btn-sm btn-outline-danger" title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
 
-                                    </form>
+                                        <!-- Edit -->
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.sites.edit', $site->id) }}">
+
+                                                <i class="ri-pencil-line me-2"></i>
+                                                Edit
+
+                                            </a>
+                                        </li>
+
+                                        <!-- Delete -->
+                                        <li>
+                                            <form action="{{ route('admin.sites.destroy', $site->id) }}" method="POST">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" class="dropdown-item text-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this site?')">
+
+                                                    <i class="ri-delete-bin-6-line me-2"></i>
+                                                    Delete
+
+                                                </button>
+
+                                            </form>
+                                        </li>
+
+                                    </ul>
 
                                 </div>
                             </td>
