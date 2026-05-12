@@ -13,7 +13,9 @@ class AttendanceController extends Controller
     public function markAttendance(Request $request)
     {
         $request->validate([
-            'status' => 'required|in:present,absent'
+            'status' => 'required|in:present,absent',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ]);
 
         $attendance = Attendance::updateOrCreate(
@@ -22,6 +24,9 @@ class AttendanceController extends Controller
                 'date' => now()->toDateString()
             ],
             [
+                'time' => now()->format('H:i:s'),
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude, 
                 'status' => $request->status
             ]
         );
