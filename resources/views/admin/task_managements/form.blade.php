@@ -195,7 +195,7 @@
                     </div>
 
                     <!-- Status -->
-                    <div class="col-lg-4 col-md-6 col-12">
+                    {{-- <div class="col-lg-4 col-md-6 col-12">
                         <label class="form-label fw-semibold">Status</label>
 
                         <select name="status" class="form-select">
@@ -216,14 +216,21 @@
                             </option>
 
                         </select>
-                    </div>
-
-                    <!-- Due Date -->
+                    </div> --}}
                     <div class="col-lg-4 col-md-6 col-12">
-                        <label class="form-label fw-semibold">Due Date</label>
+                        <label class="form-label fw-semibold">
+                            Start Date
+                        </label>
 
-                        <input type="date" name="due_date" class="form-control" min="{{ date('Y-m-d') }}"
-                            value="{{ old('due_date', isset($task->due_date) ? \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') : '') }}">
+                        <input type="date" name="start_date" class="form-control" min="{{ date('Y-m-d') }}"
+                            value="{{ old('start_date', isset($task->start_date) ? \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') : '') }}">
+                    </div>
+                    <!-- End Date -->
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <label class="form-label fw-semibold">End Date</label>
+
+                        <input type="date" name="end_date" class="form-control" min="{{ date('Y-m-d') }}"
+                            value="{{ old('end_date', isset($task->end_date) ? \Carbon\Carbon::parse($task->end_date)->format('Y-m-d') : '') }}">
                     </div>
 
                     <!-- Title -->
@@ -290,7 +297,7 @@
                                             ->first();
                                     @endphp
 
-                                    {{ $selectedUser->name ?? 'Select User' }}
+                                    {{ $selectedUser->name ?? 'Select Employee' }}
                                 </span>
 
                                 <i class="fas fa-chevron-down"></i>
@@ -302,7 +309,7 @@
                                 <!-- Search -->
                                 <div class="p-2 border-bottom bg-white sticky-top">
                                     <input type="text" class="form-control" id="searchUser"
-                                        placeholder="Search User...">
+                                        placeholder="Search Employee...">
                                 </div>
 
                                 <!-- User List -->

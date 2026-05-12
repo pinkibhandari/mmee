@@ -146,12 +146,16 @@
 
                                 </small>
 
-                                @if ($task->status == 'assigned')
+                                @if ($task->status == 'pending')
+                                    <span class="badge bg-secondary text-white px-3 py-2 rounded-pill">
+                                        <i class="fas fa-clock me-1"></i> Pending
+                                    </span>
+                                @elseif($task->status == 'assigned')
                                     <span class="badge bg-primary text-white px-3 py-2 rounded-pill">
                                         <i class="fas fa-user-check me-1"></i> Assigned
                                     </span>
                                 @elseif($task->status == 'in_progress')
-                                    <span class="badge bg-warning text-white px-3 py-2 rounded-pill">
+                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
                                         <i class="fas fa-spinner me-1"></i> In Progress
                                     </span>
                                 @elseif($task->status == 'completed')
@@ -159,7 +163,7 @@
                                         <i class="fas fa-check-circle me-1"></i> Completed
                                     </span>
                                 @else
-                                    <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                    <span class="badge bg-dark text-white px-3 py-2 rounded-pill">
                                         N/A
                                     </span>
                                 @endif
