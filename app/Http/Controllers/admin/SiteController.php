@@ -13,7 +13,7 @@ class SiteController extends Controller
      */
     public function index()
     {
-        $sites = Site::latest()->get();
+        $sites = Site::latest()->paginate(10);
         return view('admin.sites.index', compact('sites'));
     }
 

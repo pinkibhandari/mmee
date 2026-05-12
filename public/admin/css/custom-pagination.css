@@ -1,0 +1,203 @@
+/* ============================================
+   Custom Pagination Styles
+   Reusable across all admin pages
+   ============================================ */
+
+.custom-pagination-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.75rem 0;
+}
+
+/* "Showing X to Y of Z results" text */
+.custom-pagination-wrapper .pagination-info {
+    font-size: 0.85rem;
+    color: #858796;
+    white-space: nowrap;
+}
+
+.custom-pagination-wrapper .pagination-info .pagination-info-highlight {
+    font-weight: 600;
+    color: #5a5c69;
+}
+
+/* Page links container */
+.custom-pagination-wrapper .pagination-links {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Individual page item */
+.custom-pagination-wrapper .pagination-links .page-item {
+    display: inline-flex;
+}
+
+/* Base page link styling */
+.custom-pagination-wrapper .pagination-links .page-item .page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #5a5c69;
+    background-color: #fff;
+    border: 1.5px solid #d1d3e2;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Hover state */
+.custom-pagination-wrapper .pagination-links .page-item .page-link:hover {
+    background-color: #eaecf4;
+    border-color: #b7b9cc;
+    color: #3a3b45;
+}
+
+/* Active page */
+.custom-pagination-wrapper .pagination-links .page-item.active .page-link {
+    background-color: #6777ef;
+    border-color: #6777ef;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(103, 119, 239, 0.35);
+}
+
+.custom-pagination-wrapper .pagination-links .page-item.active .page-link:hover {
+    background-color: #5a6bdb;
+    border-color: #5a6bdb;
+    color: #fff;
+}
+
+/* Disabled state (prev/next when at boundary) */
+.custom-pagination-wrapper .pagination-links .page-item.disabled .page-link {
+    color: #b7b9cc;
+    background-color: #f8f9fc;
+    border-color: #e3e6f0;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.65;
+}
+
+/* Prev / Next arrow icons */
+.custom-pagination-wrapper .pagination-links .page-item .page-link .pagination-arrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Responsive: stack on very small screens */
+@media (max-width: 576px) {
+    .custom-pagination-wrapper {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .custom-pagination-wrapper .pagination-info {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ============================================
+   Status Tabs Styles
+   Reusable tab navigation for filtered lists
+   ============================================ */
+
+.status-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-bottom: 2px solid #e3e6f0;
+    padding: 0 0.5rem;
+    margin-bottom: 0;
+}
+
+.status-tabs .status-tab-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.7rem 1.25rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #858796;
+    text-decoration: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
+.status-tabs .status-tab-item:hover {
+    color: #5a5c69;
+    background-color: rgba(103, 119, 239, 0.04);
+}
+
+.status-tabs .status-tab-item.active {
+    color: #6777ef;
+    border-bottom-color: #6777ef;
+}
+
+/* Tab count badge */
+.status-tabs .status-tab-item .tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 6px;
+    line-height: 1;
+}
+
+/* Color-coded tab badges */
+.status-tabs .status-tab-item .tab-count.badge-assigned {
+    background-color: #6777ef;
+}
+
+.status-tabs .status-tab-item .tab-count.badge-in-progress {
+    background-color: #ffa426;
+}
+
+.status-tabs .status-tab-item .tab-count.badge-completed {
+    background-color: #66bb6a;
+}
+
+/* Inactive tab badges get muted colors */
+.status-tabs .status-tab-item:not(.active) .tab-count {
+    opacity: 0.6;
+}
+
+.status-tabs .status-tab-item.active .tab-count {
+    opacity: 1;
+}
+
+/* Responsive tabs */
+@media (max-width: 576px) {
+    .status-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .status-tabs .status-tab-item {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.82rem;
+    }
+}

@@ -4,97 +4,255 @@
     <div class="card shadow mb-4">
 
         <!-- Card Header -->
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="mb-0"><strong>CMS Pages List</strong></h6>
+        <div class="card-header">
 
-            <a href="{{ route('admin.cms-pages.create') }}" class="btn btn-sm btn-primary">
-                <i class="fas fa-plus me-1"></i> Add Page
-            </a>
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+
+                <!-- Title -->
+                <h6 class="mb-0">
+                    <strong>CMS Pages List</strong>
+                </h6>
+
+                <!-- Right Side -->
+                <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2">
+
+                    <!-- Search Form -->
+                    <form method="GET"
+                        action="{{ route('admin.cms-pages.index') }}"
+                        class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
+
+                        <!-- Search -->
+                        <div class="d-flex align-items-center gap-2">
+
+                            <span class="small fw-semibold d-none d-sm-inline">
+                                Search:
+                            </span>
+
+                            <input type="search"
+                                name="search"
+                                value="{{ request('search') }}"
+                                class="form-control form-control-sm"
+                                placeholder="Search pages...">
+
+                        </div>
+
+                        <!-- Status -->
+                        <select name="status"
+                            class="form-select form-select-sm">
+
+                            <option value="">Status</option>
+
+                            <option value="1"
+                                {{ request('status') == '1' ? 'selected' : '' }}>
+                                Active
+                            </option>
+
+                            <option value="0"
+                                {{ request('status') == '0' ? 'selected' : '' }}>
+                                Inactive
+                            </option>
+
+                        </select>
+
+                        <!-- Search Button -->
+                        <button class="btn btn-primary btn-sm"
+                            title="Search Filters">
+
+                            <i class="ri-search-line"></i>
+
+                        </button>
+
+                        <!-- Reset -->
+                        <a href="{{ route('admin.cms-pages.index') }}"
+                            class="btn btn-outline-secondary btn-sm"
+                            title="Reset Filters">
+
+                            <i class="ri-refresh-line"></i>
+
+                        </a>
+
+                    </form>
+
+                    <!-- Add Button -->
+                    <a href="{{ route('admin.cms-pages.create') }}"
+                        class="btn btn-primary btn-sm text-nowrap">
+
+                        <i class="ri-add-line me-1"></i>
+                        Add
+
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
 
         <!-- Success Message -->
         <div class="px-3 pt-3">
+
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                <div class="alert alert-success alert-dismissible fade show"
+                    role="alert">
+
                     {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+                    <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
+
                 </div>
+
             @endif
+
         </div>
 
         <!-- Card Body -->
-        <div class="card-body table-responsive pt-2">
+        <div class="card-body pt-2">
 
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="thead-light text-center">
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Slug</th>
-                        <th>Status</th>
-                        <th width="150">Action</th>
-                    </tr>
-                </thead>
+            <div class="table-responsive">
 
-                <tbody class="text-center">
+                <table class="table table-bordered table-hover align-middle">
 
-                    @forelse($pages as $page)
+                    <thead class="thead-light text-center">
+
                         <tr>
-                            <!-- Serial No -->
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $page->title }}</td>
-                            <td>{{ $page->slug }}</td>
+                            <th width="70">#</th>
+                            <th>Title</th>
+                            <th>Slug</th>
+                            <th width="120">Status</th>
+                            <th width="120">Action</th>
+                        </tr>
 
-                            <!-- Status -->
-                            <td>
-                                @if ($page->status == 1)
-                                    <span class="badge bg-success text-white px-3 py-2">
-                                        Active
-                                    </span>
-                                @else
-                                    <span class="badge bg-secondary px-3 py-2">
-                                        Inactive
-                                    </span>
-                                @endif
-                            </td>
+                    </thead>
 
-                            <!-- Actions -->
-                            <td>
-                                <div class="d-flex justify-content-center gap-2">
+                    <tbody class="text-center">
 
-                                    <!-- Edit -->
-                                    <a href="{{ route('admin.cms-pages.edit', $page->id) }}"
-                                        class="btn btn-sm btn-outline-primary" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                        @forelse($pages as $page)
 
-                                    <!-- Delete -->
-                                    <form action="{{ route('admin.cms-pages.destroy', $page->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure?')">
+                            <tr>
 
-                                        @csrf
-                                        @method('DELETE')
+                                <!-- Serial No -->
+                                <td>
+                                    {{ $pages->firstItem() + $loop->index }}
+                                </td>
 
-                                        <button class="btn btn-sm btn-outline-danger" title="Delete">
-                                            <i class="fas fa-trash"></i>
+                                <!-- Title -->
+                                <td class="text-break">
+                                    {{ $page->title }}
+                                </td>
+
+                                <!-- Slug -->
+                                <td class="text-break">
+                                    {{ $page->slug }}
+                                </td>
+
+                                <!-- Status -->
+                                <td>
+
+                                    @if ($page->status == 1)
+
+                                        <span class="badge bg-success text-white px-3 py-2">
+                                            Active
+                                        </span>
+
+                                    @else
+
+                                        <span class="badge bg-secondary text-white px-3 py-2">
+                                            Inactive
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+                                <!-- Actions -->
+                                <td>
+
+                                    <div class="dropdown">
+
+                                        <button class="btn btn-sm btn-icon btn-text-secondary rounded-pill"
+                                            data-bs-toggle="dropdown">
+
+                                            <i class="fas fa-ellipsis-v"></i>
+
                                         </button>
 
-                                    </form>
+                                        <ul class="dropdown-menu dropdown-menu-end">
 
-                                </div>
-                            </td>
-                        </tr>
+                                            <!-- Edit -->
+                                            <li>
 
-                    @empty
-                        <tr>
-                            <td colspan="5">No CMS Pages Found</td>
-                        </tr>
-                    @endforelse
+                                                <a class="dropdown-item"
+                                                    href="{{ route('admin.cms-pages.edit', $page->id) }}">
 
-                </tbody>
-            </table>
+                                                    <i class="fas fa-edit me-2"></i>
+                                                    Edit
 
+                                                </a>
+
+                                            </li>
+
+                                            <!-- Delete -->
+                                            <li>
+
+                                                <form action="{{ route('admin.cms-pages.destroy', $page->id) }}"
+                                                    method="POST">
+
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit"
+                                                        class="dropdown-item text-danger"
+                                                        onclick="return confirm('Delete this page?')">
+
+                                                        <i class="fas fa-trash me-2"></i>
+                                                        Delete
+
+                                                    </button>
+
+                                                </form>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="5"
+                                    class="text-center py-4">
+
+                                    No CMS Pages Found
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Pagination -->
+            <div class="px-2 pt-2">
+
+                {{ $pages->links('vendor.pagination.custom') }}
+
+            </div>
 
         </div>
+
     </div>
 @endsection

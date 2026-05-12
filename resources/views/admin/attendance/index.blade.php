@@ -138,9 +138,9 @@
     </div>
 
     <!-- Pagination -->
-    <div class="d-flex justify-content-center justify-content-md-end px-3 px-md-4 pb-3">
+    <div class="px-3 px-md-4 pb-3">
 
-        {{ $attendances->links('pagination::bootstrap-5') }}
+        {{ $attendances->links('vendor.pagination.custom') }}
 
     </div>
 

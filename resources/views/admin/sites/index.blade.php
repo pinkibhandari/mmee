@@ -39,9 +39,9 @@
 
                 <tbody class="text-center">
 
-                    @forelse($sites as $key => $site)
+                    @forelse($sites as $site)
                         <tr>
-                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $sites->firstItem() + $loop->index }}</td>
                             <td>{{ $site->site_name }}</td>
                             <td>{{ $site->address }}</td>
                             <td>{{ $site->created_at->format('d M Y') }}</td>
@@ -88,6 +88,11 @@
 
                 </tbody>
             </table>
+
+            <!-- Pagination -->
+            <div class="mt-3">
+                {{ $sites->links('vendor.pagination.custom') }}
+            </div>
 
         </div>
     </div>
