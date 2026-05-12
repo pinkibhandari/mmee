@@ -21,8 +21,11 @@ class TaskResource extends JsonResource
             'address' => $this->address,
             'priority' => $this->priority,
             'status' => $this->status,    //  from tasks table
-            'due_date' => $this->due_date,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+
+            'employee_name' => $this->employee?->name,    //  from users table
 
             //  from task logs
             // 'last_action' => $lastLog?->action,

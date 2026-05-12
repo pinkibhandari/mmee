@@ -10,6 +10,7 @@ use App\Models\TaskLogFile;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Resources\TaskResource;
+use Carbon\Carbon;
 
 class TaskLogController extends Controller
 {
@@ -154,7 +155,13 @@ class TaskLogController extends Controller
     public function workStart(Request $request)
     {
         $this->validateBasic($request);
-        $this->getTask($request->task_id);
+        $task = $this->getTask($request->task_id);
+        if ($task->is_timer_running) {
+            return $this->error(
+                'Timer already running'
+            );
+        }
+
 
         $last = $this->lastAction($request->task_id);
 
@@ -163,8 +170,77 @@ class TaskLogController extends Controller
         }
 
         $this->log($request->task_id, 'work_start');
+        // start timer
+        $task->update([
+            'is_work_started' => true,
+            'is_timer_running' => true,
+            'timer_started_at' => now(),
+        ]);
 
         return $this->success('Work started');
+    }
+
+    // PAUSE TIMER
+    public function pauseTimer(Request $request)
+    {
+        $this->validateBasic($request);
+        $task = $this->getTask($request->task_id);
+        if (!$task->is_timer_running) {
+            return $this->error(
+                'Timer already paused'
+            );
+        }
+        // calculate worked seconds
+        $seconds = Carbon::parse(
+            $task->timer_started_at
+        )->diffInSeconds(now());
+        // add into total
+        $task->increment(
+            'total_work_seconds',
+            $seconds
+        );
+
+        // stop timer
+        $task->update([
+            'is_timer_running' => false,
+            'timer_started_at' => null
+        ]);
+        return $this->success(
+            'Timer paused',
+            [
+                'worked_seconds' => $seconds,
+                'total_work_time' => gmdate(
+                    'H:i:s',
+                    $task->fresh()->total_work_seconds
+                )
+            ]
+        );
+    }
+
+
+    // RESUME TIMER
+    public function resumeTimer(Request $request)
+    {
+        $this->validateBasic($request);
+        $task = $this->getTask($request->task_id);
+        if ($task->is_timer_running) {
+            return $this->error(
+                'Timer already running'
+            );
+        }
+        if (!$task->is_work_started) {
+            return $this->error(
+                'Start work first'
+            );
+        }
+        // resume timer
+        $task->update([
+            'is_timer_running' => true,
+            'timer_started_at' => now()
+        ]);
+        return $this->success(
+            'Timer resumed'
+        );
     }
 
     // =========================================================
@@ -239,9 +315,23 @@ class TaskLogController extends Controller
             }
         }
 
+        // if timer running
+        if ($task->is_timer_running) {
+
+            $seconds = Carbon::parse(
+                $task->timer_started_at
+            )->diffInSeconds(now());
+
+            $task->increment(
+                'total_work_seconds',
+                $seconds
+            );
+        }
         //  update task status
         if ($request->status === 'completed') {
             $task->update([
+                'is_timer_running' => false,
+                'timer_started_at' => null,
                 'status' => 'completed',
                 'completed_at' => now()
             ]);
@@ -283,7 +373,8 @@ class TaskLogController extends Controller
     public function employeeTaskList()
     {
         $tasks = Task::where('assigned_to', auth()->id())
-            // ->with(['logs.files'])
+            //  ->with(['logs.files'])
+            ->with(['employee'])
             ->whereIn('status', ['assigned', 'in_progress'])
             ->latest()
             ->get();
