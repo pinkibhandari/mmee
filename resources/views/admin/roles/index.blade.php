@@ -48,7 +48,8 @@
                             <tr>
 
                                 <td>{{ $roles->firstItem() + $loop->index }}</td>
-                                <td>{{ $role->name }}</td>
+                                <!-- <td>{{ $role->name }}</td> -->
+                                <td>{{ ucwords(str_replace('_', ' ', $role->name)) }}</td>
 
                                 <td>
                                     @foreach ($role->permissions as $perm)

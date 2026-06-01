@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\TaskLogController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\CmsPageController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\SupportController;
+use App\Http\Controllers\Api\UserSupportController;
 
 
 
@@ -36,6 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::post('/start-job', [TaskLogController::class, 'startJob']);
      Route::post('/check-in', [TaskLogController::class, 'checkIn']);
      Route::post('/work-start', [TaskLogController::class, 'workStart']);
+     Route::post('/pause-job', [TaskLogController::class, 'pauseTimer']);
+     Route::post('/resume-job', [TaskLogController::class, 'resumeTimer']);
      Route::post('/work-end', [TaskLogController::class, 'workEnd']);
      Route::post('/check-out', [TaskLogController::class, 'checkOut']);
      Route::get('/employee-task-list', [TaskLogController::class, 'employeeTaskList']);
@@ -45,5 +49,15 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::get('/task/{id}', [TaskController::class, 'taskDetails']);
      //home page route
      Route::get('/home', [HomeController::class, 'homePage']);
+     // support chat routes
+     Route::post('/support/create-chat', [SupportController::class, 'createChat']);
+     Route::post('/support/send-message', [SupportController::class, 'sendMessage']);
+     Route::get('/support/chat-messages/{chat_id}', [SupportController::class, 'messages']);
+    //  notifcation routes
+    Route::post('/push-notification', [UserController::class, 'updatePushNotification']);
+    Route::post('/email-notification', [UserController::class, 'updateEmailNotification']);
+    Route::post('/job-alert-notification', [UserController::class, 'updateJobAlertNotification']);
+     // contact-us
+    Route::post('contact-us', [UserSupportController::class, 'store']);
  
  });

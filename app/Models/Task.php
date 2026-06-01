@@ -47,4 +47,9 @@ class Task extends Model
     {
         return $this->hasMany(TaskLog::class);
     }
+    // Get the latest log entry for the task
+    public function latestLog()
+    {
+        return $this->hasOne(TaskLog::class)->latestOfMany();
+    }
 }

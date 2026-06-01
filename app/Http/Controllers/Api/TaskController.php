@@ -26,7 +26,7 @@ class TaskController extends Controller
             ]);
         }
         $query = Task::where('assigned_to', auth()->id())
-             ->whereIn('status', ['assigned', 'in_progress'])
+             ->whereIn('status', ['assigned', 'in_progress','completed'])
             // ->with(['logs.files'])
             ->latest();
         // Apply status filter if provided

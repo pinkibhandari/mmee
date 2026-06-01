@@ -15,6 +15,9 @@ class HomeController extends Controller
         $totalTaskCount = Task::where('assigned_to', auth()->id())
             ->where('status', '!=', 'completed')
             ->count();
+        $totalAssignedTaskCount = Task::where('assigned_to', auth()->id())
+            ->where('status', 'assigned')
+            ->count();
 
         // Today's Task Query
         $todayTaskQuery = Task::where('assigned_to', auth()->id())
@@ -54,6 +57,7 @@ class HomeController extends Controller
                     'today' => $todayTaskCount,
                     'done' => $todayTaskDoneCount,
                     'active' => $todayTaskActiveCount,
+                    'assigned' => $totalAssignedTaskCount,
                 ],
                   'today' => [
                     'today' => $todayTaskCount,

@@ -49,7 +49,7 @@ class UserController extends Controller
         if (!$user) {
             return response()->json([
                 'status' => false,
-                'code' =>422,
+                'code' => 422,
                 'message' => 'Unauthorized',
                 'data' => (object) []
             ]);
@@ -62,7 +62,7 @@ class UserController extends Controller
         ]);
     }
 
-   public function updateProfile(Request $request)
+    public function updateProfile(Request $request)
     {
         $user = auth()->user();
         if (!$user) {
@@ -78,7 +78,7 @@ class UserController extends Controller
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $user->id,
             'phone' => 'nullable|unique:users,phone,' . $user->id . '|digits:10|regex:/^[6-9]\d{9}$/',
-           
+
         ]);
 
         if ($validator->fails()) {
@@ -103,6 +103,84 @@ class UserController extends Controller
             'data' => $user
         ]);
     }
+    public function updatePushNotification(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'push_notification' => 'required|boolean',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'message' => $validator->errors()->first(),
+                'data' => (object) []
+            ], 422);
+        }
+
+        auth()->user()->update([
+            'push_notification' => $request->push_notification,
+        ]);
+        return response()->json([
+            'code' => 200,
+            'status' => true,
+            'message' => 'Push notification setting updated.',
+            'data' => (object) []
+        ]);
+    }
+
+    public function updateEmailNotification(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email_notification' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'message' => $validator->errors()->first(),
+                'data' => (object) []
+            ], 422);
+        }
+
+        auth()->user()->update([
+            'email_notification' => $request->email_notification,
+        ]);
+
+            return response()->json([
+                'code' => 200,
+                'status' => true,
+                'message' => 'Email notification setting updated.',
+                'data' => (object) []
+            ]);
+    }
+
+    public function updateJobAlertNotification(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_alert_notification' => 'required|boolean',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 422,
+                'message' => $validator->errors()->first(),
+                'data' => (object) []
+            ], 422);
+        }
+
+        auth()->user()->update([
+            'job_alert_notification' => $request->job_alert_notification,
+        ]);
+        return response()->json([
+            'code' => 200,
+            'status' => true,
+            'message' => 'Job alert setting updated.',
+            'data' => (object) []   
+        ]);
+    }
 
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\{TaskManagement, RoleController, PermissionController, SiteController, UserController, CmsPageController,AttendanceController};
+use App\Http\Controllers\Admin\{TaskManagement, RoleController, PermissionController, SiteController, UserController, CmsPageController,AttendanceController,SupportController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,10 +25,18 @@ Route::middleware('auth')->group(function () {
         Route::resource('tasks', TaskManagement::class);
         Route::resource('sites', SiteController::class);
         Route::resource('cms-pages', CmsPageController::class);
-    Route::resource('attendance', AttendanceController::class);
+        Route::resource('attendance', AttendanceController::class);
         Route::resource('users', UserController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
+        // support chat routes
+        // Route::get( '/support/chats', [SupportController::class, 'chats'] );
+        Route::get( '/support/chats', [SupportController::class, 'index'] );
+        Route::get( '/support/chat/{id}', [SupportController::class, 'chatMessages'] );
+        Route::post( '/support/send-message', [SupportController::class, 'sendMessage'] );
+        Route::post( '/support/close-chat', [SupportController::class, 'closeChat'] );
+
+
     });
 });
 

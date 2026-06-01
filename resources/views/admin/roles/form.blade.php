@@ -29,9 +29,11 @@
             <!-- Role Name -->
             <div class="mb-3">
                 <label>Role Name</label>
-                <input type="text" name="name"
+                 <input type="text" name="name" value="{{ old('name', isset($role) ? ucwords(str_replace('_', ' ', $role->name)) : '') }}"
+                      class="form-control" required>
+                <!-- <input type="text" name="name"
                        value="{{ old('name', $role->name ?? '') }}"
-                       class="form-control" required>
+                       class="form-control" required> -->
             </div>
 
             <!-- Permissions -->

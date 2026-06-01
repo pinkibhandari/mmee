@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use Illuminate\Support\Str;
 class RoleController extends Controller
 {
     // 👉 List
@@ -30,8 +30,10 @@ class RoleController extends Controller
             'name' => 'required|unique:roles,name',
             'permissions' => 'required'
         ]);
-
-        $role = Role::create(['name' => $request->name]);
+        // convert role name
+        $roleName = Str::slug($request->name, '_');
+         $role = Role::create(['name' =>  $roleName]);
+        // $role = Role::create(['name' =>  $request->name]);
 
         // assign permissions
         $role->syncPermissions($request->permissions);
@@ -58,8 +60,10 @@ class RoleController extends Controller
             'name' => 'required|unique:roles,name,' . $id,
             'permissions' => 'required'
         ]);
-
-        $role->update(['name' => $request->name]);
+         $roleName = Str::slug($request->name, '_');
+          $role->update(['name' =>  $roleName]);
+ 
+        // $role->update(['name' => $request->name]);
 
         // update permissions
         $role->syncPermissions($request->permissions);

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Site;
 use App\Models\User;
+use App\Services\FirebaseService;
+use App\Models\UserDevice;
 
 class TaskManagement extends Controller
 {
@@ -18,11 +20,11 @@ class TaskManagement extends Controller
         $status = $request->get('status', 'pending');
 
         // Tab counts
-        $pendingCount     = Task::where('status', 'pending')->count();
+        $pendingCount = Task::where('status', 'pending')->count();
 
-        $assignedCount    = Task::where('status', 'assigned')->count();
-        $inProgressCount  = Task::where('status', 'in_progress')->count();
-        $completedCount   = Task::where('status', 'completed')->count();
+        $assignedCount = Task::where('status', 'assigned')->count();
+        $inProgressCount = Task::where('status', 'in_progress')->count();
+        $completedCount = Task::where('status', 'completed')->count();
 
         // Filtered & paginated tasks
         $tasks = Task::where('status', $status)
@@ -47,7 +49,7 @@ class TaskManagement extends Controller
 
         $sites = Site::select('id', 'site_name', 'address', 'latitude', 'longitude')->get();
 
-        $users = User::role('users')->get();
+        $users = User::role('employee')->get();
 
         // Preview Task Code
         $lastTask = Task::latest('id')->first();
@@ -92,6 +94,10 @@ class TaskManagement extends Controller
             'task_code' => $taskCode
         ]);
 
+        // Send Notification if assigned
+        if (!empty($data['assigned_to'])) { 
+            $this->sendTaskAssignNotification($data['assigned_to'], $task->id, app(FirebaseService::class));
+        }   
         return redirect()->route('admin.tasks.index')
             ->with('success', 'Task Created Successfully');
     }
@@ -107,7 +113,7 @@ class TaskManagement extends Controller
     {
         $sites = Site::select('id', 'site_name', 'address', 'latitude', 'longitude')->get();
 
-        $users = User::role('users')->get();
+        $users = User::role('employee')->get();
 
         return view('admin.task_managements.form', compact(
             'task',
@@ -171,35 +177,61 @@ class TaskManagement extends Controller
     {
         return $request->validate([
 
-            'site_id'      => 'nullable|exists:sites,id',
+            'site_id' => 'nullable|exists:sites,id',
 
-            'task_name'    => 'required|string|max:255',
+            'task_name' => 'required|string|max:255',
 
-            'assigned_to'  => 'nullable',
-            'customer_name'  => 'nullable|string|max:255',
+            'assigned_to' => 'nullable',
+            'customer_name' => 'nullable|string|max:255',
             'customer_phone' => 'nullable|digits:10',
 
-            'address'      => 'nullable|string',
+            'address' => 'nullable|string',
 
             // 'status'       => 'required|in:assigned,in_progress,completed',
 
-            'task_type'    => 'nullable|string|in:site,manual',
+            'task_type' => 'nullable|string|in:site,manual',
 
-            'title'        => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:255',
 
-            'priority'     => 'nullable|in:low,medium,high,urgent',
+            'priority' => 'nullable|in:low,medium,high,urgent',
 
-            'description'  => 'nullable|string',
+            'description' => 'nullable|string',
 
-            'work_notes'   => 'nullable|string',
+            'work_notes' => 'nullable|string',
 
-            'start_date'      => 'nullable|date',
+            'start_date' => 'nullable|date',
 
-            'end_date'        => 'nullable|date|after_or_equal:start_date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
 
-            'latitude'     => 'nullable',
+            'latitude' => 'nullable',
 
-            'longitude'    => 'nullable',
+            'longitude' => 'nullable',
         ]);
     }
+
+
+    /**
+     * Common Notification Function
+     */
+    private function sendTaskAssignNotification($employeeId, $taskId, FirebaseService $firebase)
+    {
+        $tokens = UserDevice::where('user_id', $employeeId)
+            ->whereNotNull('fcm_token')
+            ->where('fcm_token', '!=', '')
+            ->pluck('fcm_token')
+            ->toArray();
+
+        if (!empty($tokens)) {
+            $firebase->sendBulkNotification(
+                $tokens,
+                'Task Assigned',
+                'You have received a new task.',
+                [
+                    'task_id' => (string) $taskId,
+                    'type' => 'task_assign'
+                ]
+            );
+        }
+    }
+
 }

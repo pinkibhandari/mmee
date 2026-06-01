@@ -44,6 +44,9 @@ class AuthController extends Controller
             // 'emp_id' => $request->emp_id,
             'password' => Hash::make($request->password),
         ]);
+         // Assign Employee Role
+        $user->assignRole('employee');
+        // create token
         $tokenResult = $user->createToken('mobile-token');
         $plainTextToken = $tokenResult->plainTextToken;
         // $tokenId = $tokenResult->accessToken->id ?? null;;

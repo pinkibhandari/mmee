@@ -117,7 +117,7 @@ class TaskLogController extends Controller
         $this->log($request->task_id, 'start_job');
         //  update task status
         $task->update([
-            'status' => 'in_progress',
+            // 'status' => 'in_progress',
             'started_at' => now()
         ]);
 
@@ -172,6 +172,7 @@ class TaskLogController extends Controller
         $this->log($request->task_id, 'work_start');
         // start timer
         $task->update([
+            'status' => 'in_progress',
             'is_work_started' => true,
             'is_timer_running' => true,
             'timer_started_at' => now(),
@@ -194,16 +195,17 @@ class TaskLogController extends Controller
         $seconds = Carbon::parse(
             $task->timer_started_at
         )->diffInSeconds(now());
-        // add into total
-        $task->increment(
-            'total_work_seconds',
-            $seconds
-        );
+        // // add into total
+        // $task->increment(
+        //     'total_work_seconds',
+        //     $seconds
+        // );
 
         // stop timer
         $task->update([
             'is_timer_running' => false,
-            'timer_started_at' => null
+            'timer_started_at' => null,
+            'total_work_seconds' => $task->total_work_seconds + $seconds,
         ]);
         return $this->success(
             'Timer paused',
@@ -322,10 +324,10 @@ class TaskLogController extends Controller
                 $task->timer_started_at
             )->diffInSeconds(now());
 
-            $task->increment(
-                'total_work_seconds',
-                $seconds
-            );
+            // $task->increment(
+            //     'total_work_seconds',
+            //     $seconds
+            // );
         }
         //  update task status
         if ($request->status === 'completed') {
@@ -333,7 +335,8 @@ class TaskLogController extends Controller
                 'is_timer_running' => false,
                 'timer_started_at' => null,
                 'status' => 'completed',
-                'completed_at' => now()
+                'completed_at' => now(),
+                'total_work_seconds' => $task->total_work_seconds + $seconds,
             ]);
         }
         // $this->log($request->task_id, 'work_end');
